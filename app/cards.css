@@ -1,0 +1,1788 @@
+.cards {
+  position: absolute;
+  inset: 0;
+  z-index: 34;
+  pointer-events: none;
+  color: var(--bone);
+}
+.cards-dim {
+  position: absolute;
+  inset: 0;
+  opacity: 0;
+  transition: opacity 280ms ease;
+}
+
+.cards-backdrop {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+}
+
+.cards-dim::after {
+  content: '';
+  position: absolute;
+  inset: 0;
+  background:
+    radial-gradient(ellipse at 50% 46%, color-mix(in oklab, var(--ink) 52%, transparent), color-mix(in oklab, var(--ink) 88%, transparent) 78%),
+    repeating-linear-gradient(0deg, color-mix(in oklab, var(--ink) 30%, transparent) 0 1px, transparent 1px 3px);
+}
+
+.cards[data-open='true'] .cards-dim {
+  opacity: 1;
+}
+
+.cards-stage {
+  position: absolute;
+  inset: 0;
+  display: grid;
+  grid-template-rows: minmax(0, 1fr);
+  place-items: center;
+  padding: calc(env(safe-area-inset-top, 0px) + clamp(10px, 3vmin, 32px)) clamp(10px, 3vmin, 32px) calc(env(safe-area-inset-bottom, 0px) + clamp(10px, 3vmin, 32px));
+}
+
+.cards[data-open='true'] .cards-stage {
+  pointer-events: auto;
+}
+
+.card {
+  --cut: 22px;
+  --frame: color-mix(in oklab, var(--brass) 40%, transparent);
+  grid-area: 1 / 1;
+  max-width: 100%;
+  max-height: 100%;
+  overflow: hidden;
+  color: var(--bone);
+  opacity: 0;
+  transform: translateY(20px) scale(0.97);
+  transition:
+    opacity 260ms ease,
+    transform 520ms var(--ease-out);
+}
+
+.card[data-shown='true'] {
+  opacity: 1;
+  transform: none;
+}
+
+.card[data-leaving='true'] {
+  opacity: 0;
+  transform: translateY(-10px) scale(0.985);
+  transition:
+    opacity 200ms ease,
+    transform 260ms ease;
+}
+
+.card-kicker {
+  display: flex;
+  align-items: center;
+  gap: 0.7em;
+  font-family: var(--font-display);
+  font-size: 0.6875rem;
+  font-weight: 600;
+  line-height: 1.35;
+  letter-spacing: 0.3em;
+  text-transform: uppercase;
+  text-wrap: balance;
+  color: var(--brass);
+}
+
+.card-kicker::before {
+  content: '';
+  width: 0.5em;
+  height: 0.5em;
+  flex: none;
+  background: currentColor;
+  transform: rotate(45deg);
+}
+
+.card-title {
+  margin: 0;
+  font-family: var(--font-display);
+  font-size: clamp(1.6rem, 3.3vw, 2.5rem);
+  font-weight: 700;
+  line-height: 1.02;
+  letter-spacing: 0.05em;
+  text-transform: uppercase;
+  text-wrap: balance;
+  color: var(--bone);
+}
+
+.card-tagline {
+  margin: 0;
+  font-size: 0.9375rem;
+  font-weight: 500;
+  line-height: 1.45;
+  color: var(--teal);
+  text-wrap: pretty;
+}
+
+.card-text {
+  margin: 0;
+  font-size: 0.875rem;
+  line-height: 1.55;
+  color: var(--muted-text);
+  text-wrap: pretty;
+}
+
+.card-actions {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 0.6rem;
+  padding-top: 0.25rem;
+}
+
+.card-actions .ui-btn {
+  font-size: 0.8125rem;
+}
+
+.card-actions .card-button-primary {
+  min-width: 13em;
+}
+.card-body,
+.dossier-holder {
+  scrollbar-width: thin;
+  scrollbar-color: color-mix(in oklab, var(--brass) 45%, transparent) transparent;
+}
+
+.card-briefing,
+.card-result {
+  --fill: var(--glass-strong);
+  display: grid;
+  grid-template-columns: minmax(220px, 0.82fr) minmax(0, 1.25fr);
+  grid-template-rows: minmax(0, 1fr);
+  width: min(1060px, 100%);
+  max-height: min(100%, 740px);
+}
+
+.card-art {
+  position: relative;
+  min-height: 100%;
+  overflow: hidden;
+  background: var(--card-image) center / cover no-repeat;
+}
+.card-art::before {
+  content: '';
+  position: absolute;
+  inset: 0;
+  background:
+    linear-gradient(90deg, transparent 55%, var(--glass-strong)),
+    linear-gradient(180deg, transparent 50%, color-mix(in oklab, var(--ink) 75%, transparent)),
+    repeating-linear-gradient(0deg, color-mix(in oklab, var(--ink) 22%, transparent) 0 1px, transparent 1px 4px);
+}
+
+.card-art::after {
+  content: '';
+  position: absolute;
+  top: 18px;
+  bottom: 18px;
+  right: 0;
+  width: 1px;
+  background: linear-gradient(180deg, transparent, var(--brass) 20%, var(--brass) 80%, transparent);
+  opacity: 0.6;
+}
+
+.card-art-mark {
+  position: absolute;
+  left: clamp(16px, 2.4vw, 28px);
+  bottom: clamp(16px, 2.4vw, 28px);
+  z-index: 1;
+  display: flex;
+  align-items: center;
+  gap: 0.75rem;
+  max-width: calc(100% - 40px);
+}
+
+.card-art-mark img {
+  width: clamp(48px, 6.5vmin, 68px);
+  height: clamp(48px, 6.5vmin, 68px);
+  flex: none;
+  object-fit: contain;
+  filter: drop-shadow(0 6px 14px color-mix(in oklab, var(--ink) 85%, transparent));
+}
+
+.card-art-mark span {
+  display: flex;
+  flex-direction: column;
+  gap: 0.2em;
+  font-family: var(--font-display);
+  font-size: 0.625rem;
+  font-weight: 600;
+  line-height: 1.3;
+  letter-spacing: 0.28em;
+  text-transform: uppercase;
+  color: var(--brass);
+  text-shadow: 0 1px 8px var(--ink);
+}
+
+.card-art-mark b {
+  font-size: 1.45em;
+  font-weight: 700;
+  letter-spacing: 0.1em;
+  color: var(--bone);
+}
+
+.card-body {
+  --pad-y: clamp(20px, 3.2vmin, 36px);
+  --pad-x: clamp(18px, 3vw, 38px);
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  gap: 0.85rem;
+  min-width: 0;
+  min-height: 0;
+  padding: var(--pad-y) var(--pad-x);
+  overflow-y: auto;
+}
+.card-arena-level {
+  display: flex;
+  align-items: center;
+  gap: 0.9rem;
+  padding: 0.7rem 0;
+  border-block: 1px solid var(--hair);
+}
+
+.card-level-badge {
+  --cut: 8px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  flex: none;
+  min-width: 4.6rem;
+  padding: 0.5rem 0.7rem;
+  background: linear-gradient(180deg, var(--brass-hi), var(--brass) 55%, var(--brass-lo));
+  color: var(--ink);
+  clip-path: polygon(var(--cut) 0, 100% 0, 100% calc(100% - var(--cut)), calc(100% - var(--cut)) 100%, 0 100%, 0 var(--cut));
+}
+
+.card-level-badge b {
+  font-family: var(--font-display);
+  font-size: 1.15rem;
+  font-weight: 700;
+  line-height: 1;
+  letter-spacing: 0.04em;
+}
+
+.card-level-badge small {
+  margin-top: 0.25rem;
+  font-family: var(--font-display);
+  font-size: 0.5625rem;
+  font-weight: 700;
+  letter-spacing: 0.2em;
+  text-transform: uppercase;
+}
+
+.card-level-text {
+  font-size: 0.8125rem;
+  line-height: 1.6;
+  color: var(--muted-text);
+}
+
+.core-line {
+  display: inline-flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 0.35em;
+  vertical-align: middle;
+}
+
+.core-line b {
+  margin-right: 0.35em;
+  font-weight: 600;
+  color: var(--bone);
+}
+.card-roster {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(min(100%, 210px), 1fr));
+  gap: 0.5rem;
+  margin: 0;
+  padding: 0;
+  list-style: none;
+}
+
+.card-roster li {
+  --cut: 8px;
+  position: relative;
+  display: flex;
+  align-items: center;
+  gap: 0.65rem;
+  min-width: 0;
+  padding: 0.45rem 0.7rem 0.45rem 0.45rem;
+  border: 1px solid var(--hair);
+  background:
+    radial-gradient(circle at 34px 50%, rgb(var(--el, 95 224 207) / 0.24), transparent 60px),
+    color-mix(in oklab, var(--ink) 70%, transparent);
+  clip-path: polygon(var(--cut) 0, 100% 0, 100% calc(100% - var(--cut)), calc(100% - var(--cut)) 100%, 0 100%, 0 var(--cut));
+  cursor: pointer;
+  transition:
+    border-color 160ms ease,
+    background-color 160ms ease;
+}
+
+.card-roster li:hover {
+  border-color: var(--teal);
+}
+
+.card-roster-portrait {
+  width: 56px;
+  height: 56px;
+  flex: none;
+  image-rendering: pixelated;
+  transform: scale(var(--portrait-scale, 1));
+  transform-origin: 50% 85%;
+}
+
+.card-roster li > span {
+  display: flex;
+  flex-direction: column;
+  gap: 0.15rem;
+  min-width: 0;
+}
+
+.card-roster b {
+  overflow: hidden;
+  font-family: var(--font-display);
+  font-size: 0.875rem;
+  font-weight: 700;
+  letter-spacing: 0.06em;
+  text-overflow: ellipsis;
+  text-transform: uppercase;
+  white-space: nowrap;
+}
+
+.card-roster small {
+  font-size: 0.75rem;
+  line-height: 1.35;
+  color: var(--muted-text);
+}
+
+.card-roster em,
+.dossier-vs b,
+.versus-ribbon {
+  font-style: normal;
+}
+
+.card-roster em {
+  align-self: flex-start;
+  margin-top: 0.15rem;
+  padding: 0.15rem 0.45rem;
+  font-family: var(--font-display);
+  font-size: 0.5625rem;
+  font-weight: 700;
+  letter-spacing: 0.22em;
+  text-transform: uppercase;
+  color: var(--ink);
+  background: var(--teal);
+}
+
+.card-roster em[data-effect='danger'] {
+  color: var(--bone);
+  background: var(--signal);
+}
+
+.emblem-badge {
+  position: absolute;
+  left: 4px;
+  top: 4px;
+  z-index: 1;
+  width: 20px;
+  height: 20px;
+}
+
+li.card-roster-examine {
+  display: flex;
+  align-items: stretch;
+  padding: 0;
+  border: 0;
+  background: none;
+  clip-path: none;
+  cursor: default;
+}
+
+.card-roster-examine .ui-btn {
+  width: 100%;
+  min-height: 100%;
+}
+.card-reward {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: baseline;
+  column-gap: 0.75rem;
+  row-gap: 0.2rem;
+}
+
+.card-reward > span:first-child {
+  font-family: var(--font-display);
+  font-size: 0.625rem;
+  font-weight: 600;
+  letter-spacing: 0.3em;
+  text-transform: uppercase;
+  color: var(--muted-text);
+}
+
+.card-reward > b {
+  font-family: var(--font-display);
+  font-size: 1.6rem;
+  font-weight: 700;
+  line-height: 1;
+  letter-spacing: 0.02em;
+  font-variant-numeric: tabular-nums;
+  color: var(--brass);
+}
+
+.card-reward-bonus {
+  font-size: 0.8125rem;
+  font-weight: 600;
+  color: var(--teal);
+}
+
+.card-reward-note {
+  flex-basis: 100%;
+  font-size: 0.75rem;
+  color: var(--muted-text);
+}
+
+.card-reward-secret {
+  display: inline-flex;
+  flex-basis: 100%;
+  align-items: center;
+  gap: 0.45rem;
+  font-size: 0.75rem;
+  font-weight: 600;
+  color: var(--brass);
+}
+
+.card-reward-secret img {
+  flex: none;
+  width: 22px;
+  height: 22px;
+  object-fit: contain;
+}
+
+.card-dossier {
+  --fill: var(--glass-strong);
+  display: flex;
+  flex-direction: column;
+  gap: 0.9rem;
+  width: min(1060px, 100%);
+  max-height: min(100%, 780px);
+  padding: clamp(18px, 3vmin, 30px) clamp(16px, 2.8vw, 34px);
+}
+
+.dossier-head {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  justify-content: space-between;
+  gap: 0.75rem;
+  padding-bottom: 0.75rem;
+  border-bottom: 1px solid var(--hair);
+}
+
+.dossier-pager {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+}
+
+.dossier-pager[hidden] {
+  display: none;
+}
+
+.dossier-nav {
+  --cut: 6px;
+  display: grid;
+  place-items: center;
+  width: 2.25rem;
+  height: 2.25rem;
+  padding: 0;
+  border: 1px solid color-mix(in oklab, var(--bone) 28%, transparent);
+  background: color-mix(in oklab, var(--ink) 70%, transparent);
+  color: var(--bone);
+  clip-path: polygon(var(--cut) 0, 100% 0, 100% calc(100% - var(--cut)), calc(100% - var(--cut)) 100%, 0 100%, 0 var(--cut));
+  cursor: pointer;
+  transition:
+    border-color 160ms ease,
+    color 160ms ease;
+}
+
+.dossier-nav:hover,
+.dossier-nav:focus-visible {
+  border-color: var(--teal);
+  color: var(--teal);
+  outline: none;
+}
+
+.dossier-nav svg {
+  width: 1rem;
+  height: 1rem;
+}
+
+.dossier-count {
+  min-width: 7.5rem;
+  font-family: var(--font-display);
+  font-size: 0.75rem;
+  font-weight: 600;
+  letter-spacing: 0.14em;
+  text-align: center;
+  text-transform: uppercase;
+  font-variant-numeric: tabular-nums;
+  color: var(--muted-text);
+}
+
+.dossier-holder {
+  min-height: 0;
+  overflow-y: auto;
+}
+
+.dossier-page {
+  display: grid;
+  grid-template-columns: minmax(220px, 0.78fr) minmax(0, 1.45fr);
+  gap: clamp(16px, 2.6vw, 32px);
+  animation: ui-fade 260ms ease;
+}
+
+.dossier-scan {
+  display: flex;
+  flex-direction: column;
+  gap: 0.6rem;
+  min-width: 0;
+}
+.dossier-scan-frame {
+  position: relative;
+  display: grid;
+  place-items: end center;
+  aspect-ratio: 1;
+  overflow: hidden;
+  border: 1px solid color-mix(in oklab, var(--teal) 30%, transparent);
+  background:
+    radial-gradient(circle at 50% 62%, rgb(var(--el, 95 224 207) / 0.3), transparent 62%),
+    linear-gradient(color-mix(in oklab, var(--teal) 12%, transparent) 1px, transparent 1px) 0 0 / 100% 24px,
+    linear-gradient(90deg, color-mix(in oklab, var(--teal) 12%, transparent) 1px, transparent 1px) 0 0 / 24px 100%,
+    color-mix(in oklab, var(--ink) 82%, var(--teal));
+}
+
+.dossier-scan-frame::before,
+.dossier-scan-frame::after {
+  content: '';
+  position: absolute;
+  inset: 8px;
+  pointer-events: none;
+  background:
+    linear-gradient(var(--teal), var(--teal)) left top / 16px 2px no-repeat,
+    linear-gradient(var(--teal), var(--teal)) left top / 2px 16px no-repeat,
+    linear-gradient(var(--teal), var(--teal)) right bottom / 16px 2px no-repeat,
+    linear-gradient(var(--teal), var(--teal)) right bottom / 2px 16px no-repeat;
+}
+
+.dossier-scan-frame::after {
+  transform: scaleX(-1);
+}
+
+.dossier-portrait {
+  width: 84%;
+  height: auto;
+  margin-bottom: 4%;
+  image-rendering: pixelated;
+  transform: scale(var(--portrait-scale, 1));
+  transform-origin: 50% 92%;
+  filter: drop-shadow(0 10px 12px color-mix(in oklab, var(--ink) 80%, transparent));
+}
+.dossier-scan-line {
+  position: absolute;
+  left: 0;
+  right: 0;
+  top: 2%;
+  height: 94%;
+  pointer-events: none;
+  animation: dossier-sweep 2.8s ease-in-out infinite;
+}
+
+.dossier-scan-line::after {
+  content: '';
+  position: absolute;
+  left: 0;
+  right: 0;
+  top: 0;
+  height: 2px;
+  background: var(--teal);
+  box-shadow: 0 0 14px 2px color-mix(in oklab, var(--teal) 60%, transparent);
+  opacity: 0.7;
+}
+
+@keyframes dossier-sweep {
+  0%,
+  100% {
+    transform: translateY(0);
+  }
+  50% {
+    transform: translateY(100%);
+  }
+}
+
+.dossier-level {
+  position: absolute;
+  left: 14px;
+  top: 14px;
+  z-index: 1;
+  display: flex;
+  flex-direction: column;
+  gap: 0.1rem;
+  text-shadow: 0 1px 6px var(--ink);
+}
+
+.dossier-level b {
+  font-family: var(--font-display);
+  font-size: 1.35rem;
+  font-weight: 700;
+  line-height: 1;
+}
+
+.dossier-level small {
+  font-family: var(--font-display);
+  font-size: 0.5625rem;
+  font-weight: 600;
+  letter-spacing: 0.24em;
+  text-transform: uppercase;
+  color: var(--brass);
+}
+
+.dossier-core {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 0.5rem;
+}
+
+.dossier-chip {
+  --cut: 7px;
+  display: flex;
+  align-items: center;
+  gap: 0.55rem;
+  min-width: 0;
+  padding: 0.5rem 0.6rem;
+  border: 1px solid var(--hair);
+  background: color-mix(in oklab, var(--ink) 70%, transparent);
+  clip-path: polygon(var(--cut) 0, 100% 0, 100% calc(100% - var(--cut)), calc(100% - var(--cut)) 100%, 0 100%, 0 var(--cut));
+}
+
+.dossier-chip .emblem {
+  width: 34px;
+  height: 34px;
+}
+
+.dossier-chip span {
+  display: flex;
+  flex-direction: column;
+  min-width: 0;
+}
+
+.dossier-chip small {
+  font-family: var(--font-display);
+  font-size: 0.5625rem;
+  font-weight: 600;
+  letter-spacing: 0.24em;
+  text-transform: uppercase;
+  color: var(--muted-text);
+}
+
+.dossier-chip b {
+  overflow: hidden;
+  font-family: var(--font-display);
+  font-size: 0.875rem;
+  font-weight: 700;
+  letter-spacing: 0.04em;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.dossier-info {
+  display: flex;
+  flex-direction: column;
+  gap: 0.85rem;
+  min-width: 0;
+}
+
+.dossier-title {
+  display: flex;
+  flex-direction: column;
+  gap: 0.2rem;
+}
+
+.dossier-title h3 {
+  margin: 0;
+  font-family: var(--font-display);
+  font-size: clamp(1.5rem, 3vw, 2.25rem);
+  font-weight: 700;
+  line-height: 1;
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+}
+
+.dossier-title span {
+  font-family: var(--font-display);
+  font-size: 0.75rem;
+  font-weight: 600;
+  letter-spacing: 0.2em;
+  text-transform: uppercase;
+  color: var(--brass);
+}
+
+.dossier-lore {
+  margin: 0;
+  font-size: 0.875rem;
+  line-height: 1.55;
+  color: var(--muted-text);
+  text-wrap: pretty;
+}
+
+.dossier-lore em {
+  font-style: normal;
+  font-weight: 600;
+  color: var(--bone);
+}
+
+.dossier-stats {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 0.55rem 1.4rem;
+  margin: 0;
+}
+
+.dossier-stat {
+  display: grid;
+  grid-template-columns: 5.5rem minmax(0, 1fr);
+  align-items: center;
+  gap: 0.6rem;
+}
+
+.dossier-stat dt {
+  font-family: var(--font-display);
+  font-size: 0.625rem;
+  font-weight: 600;
+  letter-spacing: 0.22em;
+  text-transform: uppercase;
+  color: var(--muted-text);
+}
+
+.dossier-stat dd {
+  display: flex;
+  align-items: center;
+  gap: 0.6rem;
+  margin: 0;
+}
+
+.dossier-stat-track {
+  position: relative;
+  flex: 1;
+  height: 6px;
+  overflow: hidden;
+  background:
+    repeating-linear-gradient(90deg, transparent 0 calc(10% - 1px), color-mix(in oklab, var(--ink) 80%, transparent) calc(10% - 1px) 10%),
+    color-mix(in oklab, var(--bone) 12%, transparent);
+}
+
+.dossier-stat-track i {
+  position: absolute;
+  inset: 0 auto 0 0;
+  width: calc(var(--amount, 0) * 100%);
+  background: linear-gradient(90deg, rgb(var(--el, 95 224 207) / 0.65), rgb(var(--el-glow, var(--el, 95 224 207))));
+  box-shadow: 0 0 10px rgb(var(--el, 95 224 207) / 0.5);
+  transform-origin: left center;
+  animation: dossier-fill 700ms var(--ease-out) both;
+}
+
+@keyframes dossier-fill {
+  from {
+    transform: scaleX(0);
+  }
+}
+
+.dossier-stat b {
+  min-width: 2.2em;
+  font-family: var(--font-display);
+  font-size: 0.875rem;
+  font-weight: 700;
+  text-align: right;
+  font-variant-numeric: tabular-nums;
+}
+
+.dossier-block {
+  display: flex;
+  flex-direction: column;
+  gap: 0.4rem;
+}
+
+.dossier-block h4 {
+  margin: 0;
+  font-family: var(--font-display);
+  font-size: 0.625rem;
+  font-weight: 600;
+  letter-spacing: 0.3em;
+  text-transform: uppercase;
+  color: var(--brass);
+}
+
+.dossier-moves,
+.dossier-cards {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(min(100%, 220px), 1fr));
+  gap: 0.4rem 1rem;
+  margin: 0;
+  padding: 0;
+  list-style: none;
+}
+
+.dossier-moves li {
+  display: flex;
+  flex-direction: column;
+  gap: 0.1rem;
+  padding-left: 0.75rem;
+  border-left: 1px solid var(--hair);
+}
+
+.dossier-moves b,
+.dossier-cards b {
+  font-family: var(--font-display);
+  font-size: 0.8125rem;
+  font-weight: 700;
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+}
+
+.dossier-moves span,
+.dossier-cards small {
+  font-size: 0.75rem;
+  line-height: 1.4;
+  color: var(--muted-text);
+}
+
+.dossier-cards li {
+  display: flex;
+  align-items: center;
+  gap: 0.6rem;
+}
+
+.dossier-cards li > span:last-child {
+  display: flex;
+  flex-direction: column;
+  min-width: 0;
+}
+
+.dossier-card-art {
+  --cut: 5px;
+  width: 2.5rem;
+  aspect-ratio: 3 / 4;
+  flex: none;
+  background: var(--card-art) center / cover no-repeat;
+  box-shadow: inset 0 0 0 1px color-mix(in oklab, var(--brass) 55%, transparent);
+  clip-path: polygon(var(--cut) 0, 100% 0, 100% calc(100% - var(--cut)), calc(100% - var(--cut)) 100%, 0 100%, 0 var(--cut));
+}
+
+.dossier-parts,
+.dossier-empty {
+  margin: 0;
+  font-size: 0.8125rem;
+  line-height: 1.5;
+  color: var(--muted-text);
+}
+.dossier-matchup {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr)) auto;
+  gap: 0.5rem;
+}
+
+.dossier-vs {
+  --cut: 7px;
+  --tone: var(--bone);
+  display: flex;
+  align-items: center;
+  gap: 0.4rem;
+  min-width: 0;
+  padding: 0.55rem 0.65rem;
+  border: 1px solid color-mix(in oklab, var(--tone) 40%, transparent);
+  background: color-mix(in oklab, color-mix(in oklab, var(--ink) 86%, var(--tone)) 85%, transparent);
+  clip-path: polygon(var(--cut) 0, 100% 0, 100% calc(100% - var(--cut)), calc(100% - var(--cut)) 100%, 0 100%, 0 var(--cut));
+}
+
+.dossier-vs[data-effect='super'] {
+  --tone: var(--teal);
+}
+
+.dossier-vs[data-effect='weak'],
+.dossier-vs[data-effect='resist'] {
+  --tone: var(--signal);
+}
+
+.dossier-vs[data-incoming='true'][data-effect='super'] {
+  --tone: var(--signal);
+}
+
+.dossier-vs[data-incoming='true'][data-effect='weak'],
+.dossier-vs[data-incoming='true'][data-effect='resist'] {
+  --tone: var(--teal);
+}
+
+.dossier-vs > span:last-child {
+  display: flex;
+  flex-direction: column;
+  min-width: 0;
+  margin-left: 0.3rem;
+}
+
+.dossier-vs small {
+  font-size: 0.6875rem;
+  line-height: 1.3;
+  color: var(--muted-text);
+}
+
+.dossier-vs b {
+  font-family: var(--font-display);
+  font-size: 0.8125rem;
+  font-weight: 700;
+  letter-spacing: 0.04em;
+  color: var(--tone);
+}
+
+.dossier-arrow {
+  font-family: var(--font-display);
+  font-weight: 700;
+  color: var(--brass);
+}
+
+.dossier-weak {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  gap: 0.3rem;
+  padding: 0 0.4rem;
+}
+
+.dossier-weak small {
+  font-family: var(--font-display);
+  font-size: 0.5625rem;
+  font-weight: 600;
+  letter-spacing: 0.22em;
+  text-transform: uppercase;
+  color: var(--muted-text);
+  white-space: nowrap;
+}
+
+.dossier-weak span {
+  display: flex;
+  gap: 0.3rem;
+}
+
+.card-hint {
+  margin: 0;
+  padding: 0.6rem 0.8rem;
+  font-size: 0.8125rem;
+  line-height: 1.5;
+  color: var(--bone);
+  background:
+    linear-gradient(var(--teal), var(--teal)) left top / 2px 100% no-repeat,
+    color-mix(in oklab, var(--ink) 80%, var(--teal));
+}
+
+.dossier-actions {
+  justify-content: flex-end;
+  padding-top: 0.75rem;
+  border-top: 1px solid var(--hair);
+}
+
+.card-versus {
+  --cut: 26px;
+  --fill:
+    linear-gradient(180deg, color-mix(in oklab, var(--ink) 45%, transparent), color-mix(in oklab, var(--ink) 90%, transparent) 72%),
+    var(--card-image) center 35% / cover no-repeat;
+  position: relative;
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) auto minmax(0, 1fr);
+  align-items: end;
+  gap: clamp(8px, 2.4vw, 36px);
+  width: min(1100px, 100%);
+  padding: clamp(24px, 5vmin, 56px) clamp(16px, 4vw, 56px) clamp(22px, 4vmin, 40px);
+  will-change: transform;
+}
+.card-versus::before {
+  content: '';
+  position: absolute;
+  inset: 0;
+  pointer-events: none;
+  background:
+    linear-gradient(105deg, rgb(var(--el-left, 95 224 207) / 0.26), transparent 46%),
+    linear-gradient(285deg, rgb(var(--el-right, 240 80 63) / 0.26), transparent 46%);
+}
+
+.card-versus-side {
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 0.3rem;
+  min-width: 0;
+  text-align: center;
+  opacity: 0;
+  transform: translateX(-48px);
+  transition:
+    transform 620ms var(--ease-out) 120ms,
+    opacity 380ms ease 120ms;
+}
+
+.card-versus-enemy {
+  transform: translateX(48px);
+}
+
+.card[data-shown='true'] .card-versus-side {
+  opacity: 1;
+  transform: none;
+}
+
+.card-versus-figure {
+  position: relative;
+  display: flex;
+  align-items: flex-end;
+  justify-content: center;
+  gap: 0.25rem;
+  margin-bottom: 0.6rem;
+}
+.card-versus-figure::after {
+  content: '';
+  position: absolute;
+  left: 50%;
+  bottom: -6px;
+  z-index: -1;
+  width: 120%;
+  height: 26px;
+  background: radial-gradient(closest-side, rgb(var(--el, 95 224 207) / 0.55), transparent);
+  transform: translateX(-50%);
+}
+
+.card-versus-figure canvas {
+  width: clamp(110px, 21vmin, 190px);
+  height: clamp(110px, 21vmin, 190px);
+  image-rendering: pixelated;
+  transform: scale(var(--portrait-scale, 1));
+  transform-origin: 50% 92%;
+  filter: drop-shadow(0 14px 16px color-mix(in oklab, var(--ink) 85%, transparent));
+}
+
+.card-versus-figures canvas:nth-child(n + 2) {
+  width: clamp(76px, 14vmin, 128px);
+  height: clamp(76px, 14vmin, 128px);
+}
+
+.card-versus-kicker {
+  font-family: var(--font-display);
+  font-size: 0.625rem;
+  font-weight: 600;
+  letter-spacing: 0.32em;
+  text-transform: uppercase;
+  color: rgb(var(--el, 232 176 74));
+  text-shadow: 0 1px 8px var(--ink);
+}
+
+.card-versus-name {
+  max-width: 100%;
+  font-family: var(--font-display);
+  font-size: clamp(1.1rem, 2.6vw, 1.85rem);
+  font-weight: 700;
+  line-height: 1.05;
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+  text-wrap: balance;
+  text-shadow: 0 2px 14px var(--ink);
+}
+
+.versus-badges {
+  display: flex;
+  justify-content: center;
+  gap: 0.35rem;
+  margin-top: 0.2rem;
+}
+
+.card-versus-note {
+  font-size: 0.8125rem;
+  color: var(--muted-text);
+}
+
+.card-versus-mark {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 0.6rem;
+  align-self: center;
+  opacity: 0;
+  transform: scale(1.7);
+  transition:
+    transform 520ms var(--ease-snap) 320ms,
+    opacity 260ms ease 320ms;
+}
+
+.card[data-shown='true'] .card-versus-mark {
+  opacity: 1;
+  transform: none;
+}
+
+.card-versus-mark > span:first-child {
+  font-family: var(--font-display);
+  font-size: clamp(3rem, 9vw, 6.5rem);
+  font-weight: 700;
+  line-height: 0.9;
+  letter-spacing: 0.02em;
+  color: var(--brass);
+  transform: skewX(-10deg);
+  text-shadow:
+    0 0 30px color-mix(in oklab, var(--brass) 55%, transparent),
+    0 5px 0 color-mix(in oklab, var(--ink) 80%, transparent);
+}
+
+.card-versus-mark small {
+  max-width: 16rem;
+  font-family: var(--font-display);
+  font-size: 0.6875rem;
+  font-weight: 600;
+  letter-spacing: 0.22em;
+  text-align: center;
+  text-transform: uppercase;
+  text-wrap: balance;
+  color: var(--bone);
+}
+
+.versus-ribbon {
+  --cut: 6px;
+  --tone: var(--bone);
+  padding: 0.35rem 0.8rem;
+  font-family: var(--font-display);
+  font-size: 0.625rem;
+  font-weight: 700;
+  letter-spacing: 0.18em;
+  text-transform: uppercase;
+  white-space: nowrap;
+  color: var(--tone);
+  border: 1px solid color-mix(in oklab, var(--tone) 55%, transparent);
+  background: color-mix(in oklab, var(--ink) 80%, transparent);
+  clip-path: polygon(var(--cut) 0, 100% 0, 100% calc(100% - var(--cut)), calc(100% - var(--cut)) 100%, 0 100%, 0 var(--cut));
+}
+
+.versus-ribbon[data-effect='super'] {
+  --tone: var(--teal);
+}
+
+.versus-ribbon[data-effect='danger'] {
+  --tone: var(--signal);
+}
+
+.battle-banner {
+  --banner: var(--bone);
+  position: absolute;
+  left: 0;
+  right: 0;
+  top: 31%;
+  z-index: 35;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 0.6rem;
+  padding: 1.1rem 0 1.2rem;
+  pointer-events: none;
+  opacity: 0;
+  transform: translateY(-50%);
+  transition: opacity 300ms ease;
+  will-change: transform;
+}
+.battle-banner::before {
+  content: '';
+  position: absolute;
+  inset: 0;
+  z-index: -1;
+  background:
+    linear-gradient(90deg, transparent, color-mix(in oklab, var(--banner) 70%, transparent) 30%, color-mix(in oklab, var(--banner) 70%, transparent) 70%, transparent) top / 100% 1px no-repeat,
+    linear-gradient(90deg, transparent, color-mix(in oklab, var(--banner) 70%, transparent) 30%, color-mix(in oklab, var(--banner) 70%, transparent) 70%, transparent) bottom / 100% 1px no-repeat,
+    linear-gradient(90deg, transparent, color-mix(in oklab, var(--ink) 82%, transparent) 22%, color-mix(in oklab, var(--ink) 82%, transparent) 78%, transparent);
+  transform: scaleX(0);
+}
+
+.battle-banner[data-visible='true'] {
+  opacity: 1;
+  transition: opacity 120ms ease;
+}
+
+.battle-banner[data-visible='true']::before {
+  animation: banner-band 460ms var(--ease-out) forwards;
+}
+
+@keyframes banner-band {
+  to {
+    transform: scaleX(1);
+  }
+}
+
+.battle-banner-text {
+  padding-left: 0.2em;
+  font-family: var(--font-display);
+  font-size: clamp(2.2rem, 7vw, 5.2rem);
+  font-weight: 700;
+  line-height: 1;
+  letter-spacing: 0.2em;
+  text-transform: uppercase;
+  white-space: nowrap;
+  color: var(--banner);
+  text-shadow:
+    0 0 24px color-mix(in oklab, var(--banner) 50%, transparent),
+    0 4px 0 color-mix(in oklab, var(--ink) 70%, transparent);
+}
+
+.battle-banner[data-visible='true'] .battle-banner-text {
+  animation: banner-track 620ms var(--ease-out) both;
+}
+
+@keyframes banner-track {
+  from {
+    opacity: 0;
+    letter-spacing: 0.6em;
+    filter: blur(8px);
+  }
+  to {
+    opacity: 1;
+    letter-spacing: 0.2em;
+    filter: none;
+  }
+}
+
+.battle-banner-sub {
+  padding-left: 0.32em;
+  font-family: var(--font-display);
+  font-size: clamp(0.625rem, 1.5vw, 0.8125rem);
+  font-weight: 600;
+  letter-spacing: 0.32em;
+  text-transform: uppercase;
+  white-space: nowrap;
+  color: var(--bone);
+}
+
+.battle-banner-sub[data-empty='true'] {
+  display: none;
+}
+
+.battle-banner[data-kind='round'],
+.battle-banner[data-kind='cleared'],
+.battle-banner[data-kind='alien'] {
+  --banner: var(--teal);
+}
+
+.battle-banner[data-kind='fight'],
+.battle-banner[data-kind='victory'] {
+  --banner: var(--brass);
+}
+
+.battle-banner[data-kind='defeat'],
+.battle-banner[data-kind='alarm'] {
+  --banner: var(--signal);
+}
+
+.battle-banner[data-kind='alarm'][data-visible='true'] .battle-banner-text {
+  animation:
+    banner-track 620ms var(--ease-out) both,
+    banner-flash 260ms steps(2) infinite;
+}
+
+@keyframes banner-flash {
+  to {
+    filter: brightness(1.7);
+  }
+}
+
+.card-result {
+  --outcome: var(--brass);
+}
+
+.card-result[data-outcome='defeat'] {
+  --outcome: var(--signal);
+  --frame: color-mix(in oklab, var(--signal) 45%, transparent);
+  --bracket: var(--signal);
+}
+.card-result[data-outcome='defeat'] .card-art {
+  background:
+    linear-gradient(color-mix(in oklab, var(--ink) 38%, transparent), color-mix(in oklab, var(--ink) 38%, transparent)),
+    linear-gradient(color-mix(in oklab, var(--ink) 75%, transparent), color-mix(in oklab, var(--ink) 75%, transparent)),
+    var(--card-image) center / cover no-repeat;
+  background-blend-mode: normal, saturation, normal;
+}
+
+.card-result .card-art-mark {
+  inset: 0;
+  justify-content: center;
+  max-width: none;
+}
+.card-art-mark .card-outcome-emblem {
+  width: min(62%, 220px);
+  height: auto;
+  aspect-ratio: 1;
+  object-fit: contain;
+  filter: drop-shadow(0 18px 30px color-mix(in oklab, var(--ink) 90%, transparent));
+  opacity: 0;
+  transform: scale(1.45) rotate(-8deg);
+  transition:
+    opacity 260ms ease 200ms,
+    transform 560ms var(--ease-snap) 200ms;
+}
+
+.card[data-shown='true'] .card-art-mark .card-outcome-emblem {
+  opacity: 1;
+  transform: none;
+}
+
+.card-result-title {
+  font-size: clamp(2.4rem, 6vw, 4rem);
+  letter-spacing: 0.14em;
+  color: var(--outcome);
+  text-shadow: 0 0 28px color-mix(in oklab, var(--outcome) 40%, transparent);
+}
+
+.card-feats {
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: 1px;
+  margin: 0;
+  padding: 0;
+  list-style: none;
+  background: var(--hair);
+  border: 1px solid var(--hair);
+}
+
+.card-feats li {
+  display: flex;
+  flex-direction: column;
+  gap: 0.15rem;
+  padding: 0.6rem 0.75rem;
+  background: var(--glass-strong);
+}
+
+.card-feats b {
+  font-family: var(--font-display);
+  font-size: 1.25rem;
+  font-weight: 700;
+  line-height: 1.1;
+  font-variant-numeric: tabular-nums;
+}
+
+.card-feats span {
+  font-size: 0.6875rem;
+  line-height: 1.3;
+  color: var(--muted-text);
+}
+
+.card-secret {
+  display: flex;
+  align-items: center;
+  gap: 0.8rem;
+  padding: 0.65rem 0.85rem;
+  border: 1px solid color-mix(in oklab, var(--brass) 40%, transparent);
+  background: linear-gradient(100deg, color-mix(in oklab, var(--brass) 14%, var(--glass-strong)), var(--glass-strong) 65%);
+}
+
+.card-secret[data-kind='clue'] {
+  border-style: dashed;
+  border-color: color-mix(in oklab, var(--teal) 45%, transparent);
+  background: linear-gradient(100deg, color-mix(in oklab, var(--teal) 12%, var(--glass-strong)), var(--glass-strong) 65%);
+}
+
+.card-secret[data-kind='clue'] .card-kicker {
+  color: var(--teal);
+}
+
+.card-secret-emblem {
+  flex: none;
+  width: 44px;
+  height: 44px;
+  object-fit: contain;
+  filter: drop-shadow(0 4px 10px color-mix(in oklab, var(--ink) 80%, transparent));
+}
+
+.card-secret-frame {
+  flex: none;
+  display: grid;
+  place-items: center;
+  width: 60px;
+  height: 60px;
+  border: 1px solid var(--hair);
+  background: color-mix(in oklab, var(--ink) 55%, transparent);
+}
+
+.card-secret-frame:empty {
+  display: none;
+}
+
+.card-secret-text {
+  display: flex;
+  flex-direction: column;
+  gap: 0.2rem;
+  min-width: 0;
+}
+
+.card-secret-text b {
+  font-family: var(--font-display);
+  font-size: 1rem;
+  font-weight: 700;
+  line-height: 1.2;
+  color: var(--bone);
+}
+
+.card-secret-text small {
+  font-size: 0.75rem;
+  line-height: 1.45;
+  color: var(--muted-text);
+}
+
+.card-tally {
+  display: flex;
+  flex-direction: column;
+  gap: 0.35rem;
+  margin: 0;
+}
+
+.card-tally div {
+  display: flex;
+  align-items: baseline;
+  justify-content: space-between;
+  gap: 1rem;
+}
+
+.card-tally dt {
+  font-size: 0.8125rem;
+  color: var(--muted-text);
+}
+
+.card-tally dd {
+  margin: 0;
+  font-family: var(--font-display);
+  font-size: 0.9375rem;
+  font-weight: 700;
+  font-variant-numeric: tabular-nums;
+}
+
+.card-tally .card-tally-total {
+  margin-top: 0.3rem;
+  padding-top: 0.55rem;
+  border-top: 1px solid var(--hair);
+}
+
+.card-tally-total dt {
+  font-family: var(--font-display);
+  font-size: 0.6875rem;
+  font-weight: 600;
+  letter-spacing: 0.3em;
+  text-transform: uppercase;
+  color: var(--bone);
+}
+
+.card-tally-total dd {
+  font-size: 1.7rem;
+  line-height: 1;
+  color: var(--brass);
+}
+
+.card-wear {
+  display: flex;
+  flex-direction: column;
+  gap: 0.6rem;
+  padding: 0.65rem 0.85rem 0.75rem;
+  border: 1px solid color-mix(in oklab, var(--tier) 42%, transparent);
+  background: linear-gradient(100deg, color-mix(in oklab, var(--tier) 12%, var(--glass-strong)), var(--glass-strong) 65%);
+}
+
+.card-wear-head {
+  display: flex;
+  align-items: center;
+  gap: 0.8rem;
+}
+
+.card-wear-head img {
+  flex: none;
+  width: 40px;
+  height: 40px;
+  object-fit: contain;
+  filter: drop-shadow(0 4px 10px color-mix(in oklab, var(--ink) 80%, transparent));
+}
+
+.card-wear-head .card-kicker {
+  color: var(--tier);
+}
+
+.card-wear-list {
+  display: flex;
+  flex-direction: column;
+  gap: 0.35rem;
+  margin: 0;
+  padding: 0;
+  list-style: none;
+}
+
+.card-wear-list li {
+  display: grid;
+  grid-template-columns: 40px minmax(0, 1fr) minmax(56px, 24%) auto;
+  align-items: center;
+  gap: 0.65rem;
+  animation: ui-rise 360ms var(--ease-out) both;
+}
+
+.card-wear-list li:nth-child(2) {
+  animation-delay: 60ms;
+}
+
+.card-wear-list li:nth-child(3) {
+  animation-delay: 120ms;
+}
+
+.card-wear-list li:nth-child(4) {
+  animation-delay: 180ms;
+}
+
+.card-wear-frame {
+  display: grid;
+  place-items: center;
+  width: 40px;
+  height: 40px;
+  border: 1px solid var(--hair);
+  background: color-mix(in oklab, var(--ink) 55%, transparent);
+}
+
+.card-wear-list li[data-tier='quebrada'] .card-wear-frame canvas {
+  filter: grayscale(0.85) brightness(0.7);
+}
+
+.card-wear-name {
+  display: flex;
+  flex-direction: column;
+  gap: 0.1rem;
+  min-width: 0;
+}
+
+.card-wear-name b {
+  overflow: hidden;
+  font-size: 0.8125rem;
+  font-weight: 600;
+  white-space: nowrap;
+  text-overflow: ellipsis;
+  color: var(--bone);
+}
+
+.card-wear-name small {
+  font-size: 0.6875rem;
+  color: var(--tier);
+}
+
+.card-wear-bar {
+  position: relative;
+  height: 6px;
+  border: 1px solid var(--hair);
+  background: color-mix(in oklab, var(--ink) 70%, transparent);
+  overflow: hidden;
+}
+
+.card-wear-bar i::before,
+.card-wear-bar i::after {
+  content: '';
+  position: absolute;
+  top: 0;
+  bottom: 0;
+}
+
+.card-wear-bar i::before {
+  left: calc(var(--to) * 1%);
+  width: calc((var(--from) - var(--to)) * 1%);
+  background: var(--signal);
+  animation: card-wear-lose 1100ms 400ms ease-out both;
+}
+
+.card-wear-bar i::after {
+  left: 0;
+  width: calc(var(--to) * 1%);
+  background: var(--tier);
+  box-shadow: 0 0 6px var(--tier);
+}
+
+@keyframes card-wear-lose {
+  to {
+    opacity: 0.22;
+  }
+}
+
+.card-wear-value {
+  font-family: var(--font-display);
+  font-size: 0.75rem;
+  font-variant-numeric: tabular-nums;
+  white-space: nowrap;
+  color: var(--muted-text);
+}
+
+.card-wear-value i {
+  margin: 0 0.2rem;
+  font-style: normal;
+}
+
+.card-wear-value b {
+  font-size: 0.875rem;
+  color: var(--bone);
+}
+
+@media (max-height: 540px) {
+  .card-wear-head small {
+    display: none;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .card-wear-list li,
+  .card-wear-bar i::before {
+    animation: none;
+  }
+}
+
+.card-stats {
+  margin: 0;
+  font-size: 0.8125rem;
+  color: var(--teal);
+}
+
+.card-result[data-outcome='defeat'] .card-stats {
+  color: var(--muted-text);
+}
+.card-result[data-outcome='defeat'] .card-tagline {
+  color: color-mix(in oklab, var(--bone) 84%, var(--signal));
+}
+
+@media (max-width: 760px) {
+  .card-briefing,
+  .card-result {
+    grid-template-columns: 1fr;
+    grid-template-rows: auto minmax(0, 1fr);
+  }
+
+  .card-art {
+    min-height: 0;
+    height: clamp(96px, 20vh, 170px);
+  }
+
+  .card-art::before {
+    background:
+      linear-gradient(180deg, transparent 40%, var(--glass-strong)),
+      repeating-linear-gradient(0deg, color-mix(in oklab, var(--ink) 22%, transparent) 0 1px, transparent 1px 4px);
+  }
+
+  .card-art::after {
+    display: none;
+  }
+
+  .card-art-mark .card-outcome-emblem {
+    width: auto;
+    height: 86%;
+  }
+
+  .dossier-page {
+    grid-template-columns: 1fr;
+  }
+
+  .dossier-scan {
+    display: grid;
+    grid-template-columns: minmax(0, 0.9fr) minmax(0, 1fr);
+    align-items: start;
+  }
+
+  .dossier-core {
+    grid-template-columns: 1fr;
+  }
+
+  .dossier-stats,
+  .dossier-matchup {
+    grid-template-columns: 1fr;
+  }
+
+  .card-versus {
+    padding-inline: 12px;
+  }
+
+  .card-versus-figure canvas {
+    width: clamp(72px, 22vw, 120px);
+    height: clamp(72px, 22vw, 120px);
+  }
+
+  .card-versus-figures canvas:nth-child(n + 2) {
+    display: none;
+  }
+
+  .card-versus-note,
+  .versus-ribbon {
+    display: none;
+  }
+
+  .card-feats {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+
+  .card-actions .ui-btn {
+    flex: 1 1 auto;
+  }
+}
+
+@media (max-height: 540px) {
+  .card-briefing,
+  .card-result {
+    grid-template-columns: minmax(150px, 0.55fr) minmax(0, 1.4fr);
+    grid-template-rows: minmax(0, 1fr);
+  }
+
+  .card-art {
+    height: auto;
+    min-height: 100%;
+  }
+
+  .card-body {
+    --pad-y: 14px;
+    --pad-x: 18px;
+    gap: 0.6rem;
+  }
+
+  .card-title {
+    font-size: 1.5rem;
+  }
+
+  .card-text,
+  .card-feats {
+    display: none;
+  }
+
+  .card-roster-portrait {
+    width: 40px;
+    height: 40px;
+  }
+
+  .dossier-scan-frame {
+    max-height: 46vh;
+  }
+
+  .card-versus-figure canvas {
+    width: clamp(70px, 24vh, 130px);
+    height: clamp(70px, 24vh, 130px);
+  }
+
+  .battle-banner-text {
+    font-size: clamp(1.8rem, 11vh, 3.4rem);
+  }
+}
+@media (max-width: 760px), (max-height: 540px) {
+  .card-body {
+    padding-bottom: 0;
+  }
+
+  .card-body > .card-actions {
+    position: sticky;
+    bottom: 0;
+    z-index: 1;
+    margin: auto calc(-1 * var(--pad-x)) 0;
+    padding: 0.75rem var(--pad-x) var(--pad-y);
+    background: linear-gradient(180deg, transparent, var(--glass-strong) 38%);
+  }
+}

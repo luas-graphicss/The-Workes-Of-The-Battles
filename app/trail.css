@@ -1,0 +1,722 @@
+.card-trail {
+  --fill: var(--glass-strong);
+  --accent: 95 224 207;
+  --accent-color: rgb(var(--accent));
+  --node: 44px;
+  --boss: 86px;
+  display: grid;
+  grid-template-rows: auto auto minmax(0, 1fr) auto;
+  gap: 0.75rem;
+  width: min(1120px, 100%);
+  height: min(100%, 760px);
+  padding: clamp(0.9rem, 2.2vmin, 1.5rem) clamp(1rem, 2.6vmin, 1.75rem);
+  background:
+    radial-gradient(120% 90% at 50% 0%, color-mix(in oklab, var(--accent-color) 22%, transparent), transparent 60%),
+    repeating-linear-gradient(0deg, color-mix(in oklab, var(--ink) 22%, transparent) 0 1px, transparent 1px 4px),
+    var(--fill);
+}
+
+.trail-head {
+  display: flex;
+  align-items: flex-start;
+  justify-content: space-between;
+  gap: 1rem;
+}
+
+.trail-head-text {
+  display: flex;
+  flex-direction: column;
+  gap: 0.35rem;
+  min-width: 0;
+}
+
+.trail-title {
+  font-size: clamp(1.35rem, 2.6vw, 2.1rem);
+}
+
+.card-trail .card-kicker {
+  color: var(--accent-color);
+}
+
+.trail-flavor {
+  max-width: 62ch;
+  color: var(--muted-text);
+}
+
+.trail-progress {
+  display: grid;
+  grid-template-columns: auto auto;
+  grid-template-rows: auto auto;
+  align-items: baseline;
+  column-gap: 0.4rem;
+  flex: none;
+  min-width: 150px;
+  padding: 0.55rem 0.8rem 0.65rem;
+  border: 1px solid color-mix(in oklab, var(--accent-color) 35%, transparent);
+  background: color-mix(in oklab, var(--ink) 55%, transparent);
+  clip-path: polygon(10px 0, 100% 0, 100% calc(100% - 10px), calc(100% - 10px) 100%, 0 100%, 0 10px);
+}
+
+.trail-progress-value {
+  font-family: var(--font-display);
+  font-size: 1.9rem;
+  font-weight: 700;
+  line-height: 1;
+  color: var(--bone);
+}
+
+.trail-progress small {
+  font-size: 0.6875rem;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  color: var(--muted-text);
+}
+
+.trail-progress-bar {
+  grid-column: 1 / -1;
+  display: block;
+  height: 4px;
+  margin-top: 0.5rem;
+  background: color-mix(in oklab, var(--bone) 12%, transparent);
+  overflow: hidden;
+}
+
+.trail-progress-bar i {
+  display: block;
+  height: 100%;
+  background: linear-gradient(90deg, var(--accent-color), var(--brass));
+  transition: width 600ms var(--ease-out);
+}
+
+.trail-worlds {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+}
+
+.trail-nav {
+  display: grid;
+  place-items: center;
+  width: 2.1rem;
+  height: 2.1rem;
+  flex: none;
+  border: 1px solid color-mix(in oklab, var(--bone) 18%, transparent);
+  background: color-mix(in oklab, var(--ink) 50%, transparent);
+  color: var(--bone);
+  cursor: pointer;
+  transition:
+    border-color 160ms ease,
+    background 160ms ease,
+    opacity 160ms ease;
+}
+
+.trail-nav svg {
+  width: 1.1rem;
+  height: 1.1rem;
+}
+
+.trail-nav:hover:not(:disabled),
+.trail-nav:focus-visible {
+  border-color: var(--accent-color);
+  background: color-mix(in oklab, var(--accent-color) 18%, var(--ink));
+  outline: none;
+}
+
+.trail-nav:disabled {
+  opacity: 0.3;
+  cursor: default;
+}
+
+.trail-world-list {
+  display: grid;
+  grid-template-columns: repeat(10, minmax(0, 1fr));
+  gap: 0.3rem;
+  flex: 1;
+  margin: 0;
+  padding: 0;
+  list-style: none;
+}
+
+.trail-world {
+  --accent-color: rgb(var(--accent));
+  position: relative;
+  display: grid;
+  place-items: center;
+  width: 100%;
+  height: 2.1rem;
+  border: 1px solid color-mix(in oklab, var(--bone) 14%, transparent);
+  background: color-mix(in oklab, var(--ink) 45%, transparent);
+  color: var(--muted-text);
+  font-family: var(--font-display);
+  font-size: 0.8125rem;
+  font-weight: 700;
+  cursor: pointer;
+  clip-path: polygon(6px 0, 100% 0, 100% calc(100% - 6px), calc(100% - 6px) 100%, 0 100%, 0 6px);
+  transition:
+    background 160ms ease,
+    color 160ms ease,
+    border-color 160ms ease;
+}
+
+.trail-world::after {
+  content: '';
+  position: absolute;
+  inset: auto 0 0;
+  height: 3px;
+  background: var(--accent-color);
+  opacity: 0;
+  transition: opacity 160ms ease;
+}
+
+.trail-world[data-status='done'] {
+  color: var(--bone);
+  border-color: color-mix(in oklab, var(--accent-color) 45%, transparent);
+}
+
+.trail-world[data-status='done']::after,
+.trail-world[data-status='next']::after {
+  opacity: 1;
+}
+
+.trail-world[data-status='next'] {
+  color: var(--ink);
+  background: var(--accent-color);
+  border-color: var(--accent-color);
+}
+
+.trail-world[data-status='locked'] {
+  opacity: 0.55;
+}
+
+.trail-world[data-current='true'] {
+  outline: 2px solid var(--bone);
+  outline-offset: -2px;
+}
+
+.trail-world:focus-visible {
+  outline: 2px solid var(--brass);
+  outline-offset: -2px;
+}
+.trail-frame {
+  container-type: size;
+  min-height: 0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.trail-map {
+  position: relative;
+  width: min(100%, calc(100cqh * 5));
+  height: min(100%, calc(100cqw * 0.46));
+  flex: none;
+  border: 1px solid color-mix(in oklab, var(--accent-color) 22%, transparent);
+  background:
+    radial-gradient(ellipse at 50% 120%, color-mix(in oklab, var(--accent-color) 16%, transparent), transparent 60%),
+    linear-gradient(180deg, color-mix(in oklab, var(--ink) 35%, transparent), color-mix(in oklab, var(--ink) 70%, transparent)),
+    repeating-linear-gradient(90deg, color-mix(in oklab, var(--bone) 4%, transparent) 0 1px, transparent 1px 48px),
+    repeating-linear-gradient(0deg, color-mix(in oklab, var(--bone) 4%, transparent) 0 1px, transparent 1px 48px);
+  overflow: visible;
+}
+.trail-map {
+  --pad-top: 84px;
+  --pad-bottom: 48px;
+  --pad-x: 64px;
+}
+
+.trail-inner {
+  position: absolute;
+  inset: var(--pad-top) var(--pad-x) var(--pad-bottom);
+}
+
+.trail-road {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  overflow: visible;
+}
+
+.trail-road path {
+  fill: none;
+  stroke-linecap: round;
+  stroke-linejoin: round;
+  vector-effect: non-scaling-stroke;
+}
+
+.trail-road-shadow {
+  stroke: color-mix(in oklab, var(--ink) 80%, transparent);
+  stroke-width: 14;
+}
+
+.trail-road-base {
+  stroke: color-mix(in oklab, var(--bone) 16%, transparent);
+  stroke-width: 8;
+}
+
+.trail-road-done {
+  stroke: var(--accent-color);
+  stroke-width: 8;
+  stroke-dasharray: 0 100;
+  filter: drop-shadow(0 0 6px color-mix(in oklab, var(--accent-color) 70%, transparent));
+  transition: stroke-dasharray 700ms var(--ease-out);
+}
+
+.trail-road-dash {
+  stroke: color-mix(in oklab, var(--bone) 55%, transparent);
+  stroke-width: 2;
+  stroke-dasharray: 1.2 1.6;
+  animation: trail-march 14s linear infinite;
+}
+.trail-road-march {
+  will-change: transform;
+}
+
+@keyframes trail-march {
+  to {
+    stroke-dashoffset: -100;
+  }
+}
+
+.trail-nodes {
+  position: absolute;
+  inset: 0;
+  margin: 0;
+  padding: 0;
+  list-style: none;
+}
+
+.trail-node {
+  position: absolute;
+  left: var(--x);
+  top: var(--y);
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 0.3rem;
+  transform: translate(-50%, -50%);
+}
+
+.trail-node-button {
+  position: relative;
+  display: grid;
+  place-items: center;
+  width: var(--node);
+  height: var(--node);
+  padding: 0;
+  border: 2px solid color-mix(in oklab, var(--bone) 25%, transparent);
+  background: color-mix(in oklab, var(--ink) 80%, var(--bone));
+  color: var(--bone);
+  cursor: pointer;
+  clip-path: polygon(50% 0, 93% 25%, 93% 75%, 50% 100%, 7% 75%, 7% 25%);
+  transition:
+    transform 200ms var(--ease-out),
+    background 160ms ease,
+    border-color 160ms ease;
+}
+
+.trail-node-face {
+  display: grid;
+  place-items: center;
+  font-family: var(--font-display);
+  font-size: 1rem;
+  font-weight: 700;
+}
+
+.trail-node-face svg {
+  width: 1.15rem;
+  height: 1.15rem;
+}
+
+.trail-node[data-status='done'] .trail-node-button {
+  border-color: var(--accent-color);
+  background: color-mix(in oklab, var(--accent-color) 30%, var(--ink));
+  color: var(--accent-color);
+}
+
+.trail-node[data-status='next'] .trail-node-button {
+  border-color: var(--brass);
+  background: var(--brass);
+  color: var(--ink);
+  box-shadow: 0 0 0 6px color-mix(in oklab, var(--brass) 25%, transparent);
+  animation: trail-pulse 1.8s ease-in-out infinite;
+}
+
+@keyframes trail-pulse {
+  0%,
+  100% {
+    box-shadow: 0 0 0 4px color-mix(in oklab, var(--brass) 30%, transparent);
+  }
+  50% {
+    box-shadow: 0 0 0 11px color-mix(in oklab, var(--brass) 0%, transparent);
+  }
+}
+
+.trail-node[data-status='locked'] .trail-node-button {
+  color: color-mix(in oklab, var(--bone) 40%, transparent);
+  border-color: color-mix(in oklab, var(--bone) 12%, transparent);
+  background: color-mix(in oklab, var(--ink) 70%, transparent);
+}
+
+.trail-node-button:hover,
+.trail-node-button:focus-visible {
+  transform: scale(1.1);
+  outline: none;
+}
+
+.trail-node[data-selected='true'] .trail-node-button {
+  outline: 2px solid var(--bone);
+  outline-offset: 3px;
+}
+
+.trail-node-label {
+  font-family: var(--font-display);
+  font-size: 0.6875rem;
+  font-weight: 600;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  color: var(--muted-text);
+  white-space: nowrap;
+  text-shadow: 0 1px 2px var(--ink);
+}
+.trail-node[data-status='next']:not([data-boss='true']) .trail-node-label {
+  display: none;
+}
+
+.trail-node[data-boss='true'] .trail-node-button {
+  width: var(--boss);
+  height: var(--boss);
+  border-width: 3px;
+  overflow: hidden;
+}
+
+.trail-node[data-boss='true'][data-status='next'] .trail-node-button {
+  background: color-mix(in oklab, var(--brass) 40%, var(--ink));
+}
+
+.trail-boss-portrait {
+  width: calc(var(--boss) * 0.92 * var(--portrait-scale, 1));
+  height: auto;
+  image-rendering: pixelated;
+  filter: drop-shadow(0 4px 6px color-mix(in oklab, var(--ink) 80%, transparent));
+  transform: translateY(8%);
+}
+
+.trail-boss-portrait[data-silhouette='true'] {
+  filter: brightness(0) opacity(0.65);
+}
+.trail-node-crown {
+  position: absolute;
+  top: -12px;
+  right: -14px;
+  display: grid;
+  place-items: center;
+  width: 34px;
+  height: 34px;
+  background: color-mix(in oklab, var(--ink) 85%, transparent);
+  border: 1px solid color-mix(in oklab, var(--brass) 50%, transparent);
+  clip-path: polygon(50% 0, 100% 25%, 100% 75%, 50% 100%, 0 75%, 0 25%);
+  pointer-events: none;
+}
+
+.trail-node-crown {
+  color: var(--brass);
+}
+
+.trail-node-crown svg {
+  width: 20px;
+  height: 20px;
+}
+
+.trail-node[data-status='done'] .trail-node-crown {
+  color: var(--accent-color);
+}
+
+.trail-node[data-status='locked'] .trail-node-crown {
+  opacity: 0.4;
+}
+
+.trail-node[data-boss='true'] .trail-node-label {
+  max-width: 11rem;
+  font-size: 0.75rem;
+  color: var(--bone);
+  text-align: center;
+  white-space: normal;
+  text-wrap: balance;
+}
+
+.trail-here {
+  position: absolute;
+  bottom: calc(100% - 6px);
+  left: 50%;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  transform: translateX(-50%);
+  animation: trail-bob 1.6s ease-in-out infinite;
+  pointer-events: none;
+}
+
+.trail-here-portrait {
+  width: 72px;
+  height: auto;
+  image-rendering: pixelated;
+  filter: drop-shadow(0 6px 8px color-mix(in oklab, var(--ink) 90%, transparent));
+}
+
+.trail-here i {
+  width: 0;
+  height: 0;
+  border-left: 7px solid transparent;
+  border-right: 7px solid transparent;
+  border-top: 9px solid var(--brass);
+}
+
+@keyframes trail-bob {
+  0%,
+  100% {
+    transform: translate(-50%, 0);
+  }
+  50% {
+    transform: translate(-50%, -6px);
+  }
+}
+
+.trail-locked {
+  position: absolute;
+  inset: 0;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 0.25rem;
+  padding: 1rem;
+  text-align: center;
+  background: color-mix(in oklab, var(--ink) 55%, transparent);
+  backdrop-filter: grayscale(1);
+}
+
+.trail-locked[hidden] {
+  display: none;
+}
+
+.trail-locked img {
+  opacity: 0.6;
+  filter: grayscale(1);
+}
+
+.trail-locked b {
+  font-family: var(--font-display);
+  font-size: 1.1rem;
+  letter-spacing: 0.2em;
+  text-transform: uppercase;
+  color: var(--bone);
+}
+
+.trail-locked small {
+  max-width: 44ch;
+  font-size: 0.8125rem;
+  line-height: 1.45;
+  color: var(--muted-text);
+  text-wrap: pretty;
+}
+
+.trail-foot {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  justify-content: space-between;
+  gap: 0.75rem 1.25rem;
+  padding-top: 0.75rem;
+  border-top: 1px solid color-mix(in oklab, var(--bone) 12%, transparent);
+}
+
+.trail-detail {
+  display: flex;
+  align-items: center;
+  gap: 0.75rem;
+  min-width: 0;
+  flex: 1 1 320px;
+}
+
+.trail-detail-badge {
+  display: grid;
+  place-items: center;
+  width: 48px;
+  height: 48px;
+  flex: none;
+  border: 2px solid color-mix(in oklab, var(--bone) 25%, transparent);
+  color: var(--bone);
+  font-family: var(--font-display);
+  font-size: 1.1rem;
+  font-weight: 700;
+  clip-path: polygon(50% 0, 93% 25%, 93% 75%, 50% 100%, 7% 75%, 7% 25%);
+  background: color-mix(in oklab, var(--ink) 70%, transparent);
+}
+
+.trail-detail-badge svg {
+  width: 1.3rem;
+  height: 1.3rem;
+}
+
+.trail-detail-badge[data-status='next'] {
+  border-color: var(--brass);
+  background: var(--brass);
+  color: var(--ink);
+}
+
+.trail-detail-badge[data-status='done'] {
+  border-color: var(--accent-color);
+  color: var(--accent-color);
+}
+
+.trail-detail-badge[data-boss='true'][data-status='locked'] {
+  color: color-mix(in oklab, var(--bone) 50%, transparent);
+}
+
+.trail-detail-text {
+  display: flex;
+  flex-direction: column;
+  gap: 0.15rem;
+  min-width: 0;
+}
+
+.trail-detail-title {
+  font-family: var(--font-display);
+  font-size: 1.05rem;
+  font-weight: 700;
+  letter-spacing: 0.04em;
+  text-transform: uppercase;
+  color: var(--bone);
+  text-wrap: balance;
+}
+
+.trail-detail-meta {
+  font-size: 0.8125rem;
+  line-height: 1.4;
+  color: var(--muted-text);
+}
+
+.trail-actions {
+  flex: none;
+  padding-top: 0;
+}
+
+.tablet-section-row {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 0.75rem;
+}
+
+.tablet-section-row .tablet-section {
+  margin: 0;
+}
+
+.tablet-trail-button {
+  flex: none;
+  font-size: 0.75rem;
+}
+
+@media (max-width: 760px) {
+  .card-trail {
+    --node: 36px;
+    --boss: 66px;
+    gap: 0.6rem;
+  }
+
+  .trail-head {
+    flex-direction: column;
+  }
+
+  .trail-progress {
+    min-width: 0;
+    width: 100%;
+    grid-template-columns: auto 1fr;
+  }
+
+  .trail-flavor {
+    display: none;
+  }
+
+  .trail-node-label {
+    display: none;
+  }
+
+  .trail-node[data-boss='true'] .trail-node-label {
+    display: block;
+    max-width: 7rem;
+    font-size: 0.625rem;
+  }
+
+  .trail-here-portrait {
+    width: 52px;
+  }
+
+  .trail-map {
+    --pad-top: 64px;
+    --pad-bottom: 36px;
+    --pad-x: 44px;
+  }
+
+  .trail-detail-meta {
+    font-size: 0.75rem;
+  }
+}
+
+@media (max-height: 520px) {
+  .card-trail {
+    --node: 34px;
+    --boss: 60px;
+    gap: 0.45rem;
+    padding: 0.7rem 1rem;
+  }
+
+  .trail-flavor,
+  .trail-progress-bar {
+    display: none;
+  }
+
+  .trail-title {
+    font-size: 1.1rem;
+  }
+
+  .trail-progress {
+    padding: 0.35rem 0.6rem;
+  }
+
+  .trail-progress-value {
+    font-size: 1.3rem;
+  }
+
+  .trail-node-label {
+    display: none;
+  }
+
+  .trail-node[data-boss='true'] .trail-node-label {
+    display: none;
+  }
+
+  .trail-here-portrait {
+    width: 48px;
+  }
+
+  .trail-map {
+    --pad-top: 60px;
+    --pad-bottom: 22px;
+    --pad-x: 48px;
+  }
+
+  .trail-foot {
+    padding-top: 0.45rem;
+  }
+
+  .trail-detail-badge {
+    width: 38px;
+    height: 38px;
+  }
+}
+
+.game-root[data-motion='reduced'] :is(.trail-road-dash, .trail-here, .trail-node[data-status='next'] .trail-node-button) {
+  animation: none;
+}

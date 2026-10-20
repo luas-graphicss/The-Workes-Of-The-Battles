@@ -1,0 +1,532 @@
+.talk {
+  --accent: var(--brass);
+  position: absolute;
+  left: 50%;
+  bottom: calc(env(safe-area-inset-bottom, 0px) + clamp(12px, 4vh, 36px));
+  z-index: 28;
+  width: min(780px, calc(100% - 24px));
+  opacity: 0;
+  visibility: hidden;
+  pointer-events: none;
+  transform: translate(-50%, 18px);
+  transition:
+    opacity 200ms ease,
+    transform 420ms var(--ease-out),
+    visibility 0s linear 420ms;
+}
+
+.talk[data-visible='true'] {
+  opacity: 1;
+  visibility: visible;
+  pointer-events: auto;
+  transform: translate(-50%, 0);
+  transition:
+    opacity 200ms ease,
+    transform 420ms var(--ease-out);
+}
+
+.talk[data-accent='rival'] {
+  --accent: var(--teal);
+}
+
+.talk[data-accent='clearing'] {
+  --accent: color-mix(in oklab, var(--teal) 55%, var(--brass));
+}
+
+.talk[data-accent='league'] {
+  --accent: #e0607a;
+}
+
+.talk[data-accent='visitor'] {
+  --accent: #b48cff;
+}
+
+.talk-panel {
+  --frame: color-mix(in oklab, var(--accent) 45%, transparent);
+  --bracket: var(--accent);
+  display: grid;
+  grid-template-columns: auto minmax(0, 1fr);
+  gap: 18px;
+  padding: 18px 20px 16px 18px;
+}
+
+.talk-portrait {
+  display: flex;
+  align-items: flex-start;
+}
+
+.talk-portrait-frame {
+  --cut: 12px;
+  display: grid;
+  place-items: center;
+  width: 112px;
+  height: 112px;
+  overflow: hidden;
+  border: 1px solid color-mix(in oklab, var(--accent) 55%, transparent);
+  background: radial-gradient(circle at 50% 40%, color-mix(in oklab, var(--accent) 26%, transparent), color-mix(in oklab, var(--ink) 82%, transparent) 72%);
+  background-origin: border-box;
+  clip-path: polygon(var(--cut) 0, 100% 0, 100% calc(100% - var(--cut)), calc(100% - var(--cut)) 100%, 0 100%, 0 var(--cut));
+  animation: ui-rise 360ms var(--ease-out) both;
+}
+
+.talk-portrait-frame[data-empty='true'] {
+  display: none;
+}
+
+.talk-portrait-frame > canvas,
+.talk-portrait-frame > img {
+  width: 96px;
+  height: 96px;
+  object-fit: contain;
+  image-rendering: pixelated;
+}
+
+.talk-portrait-frame > img.talk-card-art {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  image-rendering: auto;
+}
+
+.talk-main {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+  min-width: 0;
+}
+
+.talk-head {
+  display: flex;
+  align-items: flex-start;
+  justify-content: space-between;
+  gap: 12px;
+  padding-right: 72px;
+}
+
+.talk-titles {
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+  min-width: 0;
+}
+
+.talk-kicker {
+  color: var(--accent);
+}
+
+.talk-name {
+  margin: 0;
+  font-family: var(--font-display);
+  font-size: 1.35em;
+  font-weight: 700;
+  line-height: 1.1;
+  letter-spacing: 0.04em;
+  color: var(--bone);
+  text-wrap: balance;
+}
+
+.talk-meter {
+  display: flex;
+  flex: none;
+  flex-direction: column;
+  align-items: flex-end;
+  gap: 4px;
+}
+
+.talk-meter[hidden] {
+  display: none;
+}
+
+.talk-hearts {
+  display: inline-flex;
+  gap: 4px;
+}
+
+.talk-hearts i {
+  display: block;
+  width: 14px;
+  height: 12px;
+  background: color-mix(in oklab, var(--bone) 22%, transparent);
+  clip-path: polygon(50% 100%, 0 45%, 0 18%, 22% 0, 50% 16%, 78% 0, 100% 18%, 100% 45%);
+  transition: background-color 240ms ease;
+}
+
+.talk-hearts i[data-on='true'] {
+  background: var(--signal);
+}
+
+.talk-meter-label {
+  font-family: var(--font-display);
+  font-size: 0.7em;
+  font-weight: 700;
+  letter-spacing: 0.16em;
+  text-transform: uppercase;
+  color: var(--muted-text);
+}
+
+.talk-text {
+  min-height: calc(1.55em * 3);
+  margin: 0;
+  font-size: 1em;
+  line-height: 1.55;
+  color: color-mix(in oklab, var(--bone) 92%, transparent);
+  text-wrap: pretty;
+}
+
+.talk[data-choices='true'] .talk-text {
+  min-height: 0;
+}
+
+.talk-text[data-typing='true']::after {
+  content: '';
+  display: inline-block;
+  width: 0.5em;
+  height: 1em;
+  margin-left: 2px;
+  vertical-align: -0.12em;
+  background: var(--accent);
+  animation: talk-caret 700ms steps(1) infinite;
+}
+
+@keyframes talk-caret {
+  50% {
+    opacity: 0;
+  }
+}
+
+.talk-live {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  margin: -1px;
+  padding: 0;
+  overflow: hidden;
+  clip: rect(0, 0, 0, 0);
+  white-space: nowrap;
+  border: 0;
+}
+
+.talk-choices {
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+}
+
+.talk-choices[hidden] {
+  display: none;
+}
+
+.talk-choice {
+  --cut: 8px;
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  width: 100%;
+  min-height: 2.6em;
+  padding: 6px 14px 6px 10px;
+  border: 1px solid color-mix(in oklab, var(--bone) 18%, transparent);
+  background: color-mix(in oklab, var(--ink) 72%, transparent);
+  background-origin: border-box;
+  clip-path: polygon(var(--cut) 0, 100% 0, 100% 100%, 0 100%, 0 var(--cut));
+  color: var(--bone);
+  font: inherit;
+  font-size: 0.92em;
+  text-align: left;
+  cursor: pointer;
+  touch-action: manipulation;
+  animation: ui-rise 320ms var(--ease-out) both;
+  transition:
+    border-color 160ms ease,
+    background-color 160ms ease,
+    transform 160ms var(--ease-out);
+}
+
+.talk-choice:nth-child(2) {
+  animation-delay: 40ms;
+}
+
+.talk-choice:nth-child(3) {
+  animation-delay: 80ms;
+}
+
+.talk-choice:hover,
+.talk-choice:focus-visible {
+  border-color: var(--accent);
+  background: color-mix(in oklab, var(--accent) 14%, var(--ink));
+  outline: none;
+  transform: translateX(3px);
+}
+
+.talk-choice[aria-disabled='true'] {
+  cursor: not-allowed;
+  opacity: 0.5;
+  transform: none;
+}
+
+.talk-choice kbd {
+  flex: none;
+}
+
+.talk-choice-label {
+  flex: 1;
+  min-width: 0;
+}
+
+.talk-choice-note {
+  flex: none;
+  font-family: var(--font-display);
+  font-size: 0.78em;
+  font-weight: 700;
+  letter-spacing: 0.08em;
+  color: var(--brass);
+}
+
+.talk-foot {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+}
+
+.talk-pages {
+  display: inline-flex;
+  gap: 5px;
+}
+
+.talk-pages[hidden] {
+  display: none;
+}
+
+.talk-pages i {
+  display: block;
+  width: 14px;
+  height: 4px;
+  background: color-mix(in oklab, var(--bone) 22%, transparent);
+  clip-path: polygon(3px 0, 100% 0, calc(100% - 3px) 100%, 0 100%);
+  transition: background-color 200ms ease;
+}
+
+.talk-pages i[data-on='true'] {
+  background: var(--accent);
+}
+
+.talk-next {
+  margin-left: auto;
+}
+
+.talk-next[hidden] {
+  display: none;
+}
+
+.talk-close {
+  position: absolute;
+  top: 14px;
+  right: 16px;
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  padding: 4px 6px;
+  border: 0;
+  background: none;
+  color: var(--muted-text);
+  cursor: pointer;
+  transition: color 160ms ease;
+}
+
+.talk-close svg {
+  width: 16px;
+  height: 16px;
+}
+
+.talk-close:hover,
+.talk-close:focus-visible {
+  color: var(--bone);
+  outline: none;
+}
+
+@media (max-width: 640px) {
+  .talk-panel {
+    grid-template-columns: 1fr;
+    gap: 10px;
+    padding: 14px 14px 12px;
+  }
+
+  .talk-portrait {
+    display: none;
+  }
+
+  .talk-text {
+    min-height: calc(1.5em * 4);
+    font-size: 0.95em;
+  }
+}
+
+@media (max-height: 540px) {
+  .talk {
+    bottom: calc(env(safe-area-inset-bottom, 0px) + 10px);
+  }
+
+  .talk-panel {
+    gap: 14px;
+    padding: 12px 16px 12px 12px;
+  }
+
+  .talk-portrait-frame {
+    width: 84px;
+    height: 84px;
+  }
+
+  .talk-portrait-frame > canvas,
+  .talk-portrait-frame > img {
+    width: 64px;
+    height: 64px;
+  }
+
+  .talk-name {
+    font-size: 1.15em;
+  }
+
+  .talk-text {
+    min-height: calc(1.5em * 2);
+    font-size: 0.94em;
+    line-height: 1.5;
+  }
+
+  .talk-choice {
+    min-height: 2.2em;
+    padding-block: 4px;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .talk,
+  .talk-choice,
+  .talk-portrait-frame {
+    animation: none;
+    transition: none;
+  }
+}
+
+.npc-bubble {
+  position: absolute;
+  left: 0;
+  top: 0;
+  z-index: 18;
+  max-width: 220px;
+  padding: 7px 11px 8px;
+  border: 1px solid color-mix(in oklab, var(--teal) 50%, transparent);
+  background: color-mix(in oklab, var(--ink) 90%, transparent);
+  color: var(--bone);
+  font-family: var(--font-display);
+  font-size: 0.8rem;
+  font-weight: 600;
+  line-height: 1.35;
+  letter-spacing: 0.02em;
+  text-align: center;
+  text-wrap: balance;
+  pointer-events: none;
+  opacity: 0;
+  scale: 0.92;
+  transform-origin: 50% 100%;
+  filter: drop-shadow(0 6px 14px color-mix(in oklab, var(--ink) 70%, transparent));
+  transition:
+    opacity 180ms ease,
+    scale 280ms var(--ease-out);
+}
+
+.npc-bubble::after {
+  content: '';
+  position: absolute;
+  left: 50%;
+  bottom: -6px;
+  width: 10px;
+  height: 10px;
+  border-right: 1px solid color-mix(in oklab, var(--teal) 50%, transparent);
+  border-bottom: 1px solid color-mix(in oklab, var(--teal) 50%, transparent);
+  background: inherit;
+  transform: translateX(-50%) rotate(45deg);
+}
+
+.npc-bubble[data-visible='true'] {
+  opacity: 1;
+  scale: 1;
+}
+
+.tablet-town {
+  display: flex;
+  flex-direction: column;
+  gap: 3px;
+  margin: 0;
+  padding: 0;
+  list-style: none;
+}
+
+.tablet-town li {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) auto;
+  align-items: center;
+  gap: 6px;
+  padding: 4px 6px;
+  border-radius: 4px;
+  background: rgba(126, 255, 217, 0.04);
+  box-shadow: inset 0 0 0 1px rgba(126, 255, 217, 0.12);
+}
+
+.tablet-town li[data-kind='master'] {
+  box-shadow: inset 2px 0 0 var(--screen-gold);
+}
+
+.tablet-town li[data-kind='rival'] {
+  box-shadow: inset 2px 0 0 var(--screen-glow);
+}
+
+.tablet-town span {
+  display: flex;
+  flex-direction: column;
+  gap: 1px;
+  min-width: 0;
+}
+
+.tablet-town b {
+  overflow: hidden;
+  font-size: 9.5px;
+  white-space: nowrap;
+  text-overflow: ellipsis;
+  color: var(--screen-ink);
+}
+
+.tablet-town small {
+  overflow: hidden;
+  font-size: 8px;
+  white-space: nowrap;
+  text-overflow: ellipsis;
+  color: var(--screen-dim);
+}
+
+.tablet-town-state {
+  font-size: 8px;
+  font-weight: 800;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  color: var(--screen-dim);
+}
+
+.tablet-town li[data-done='false'] .tablet-town-state {
+  color: var(--screen-gold);
+}
+
+.tablet-town-hearts {
+  display: inline-flex;
+  gap: 2px;
+}
+
+.tablet-town-hearts i {
+  display: block;
+  width: 8px;
+  height: 7px;
+  background: rgba(214, 255, 241, 0.2);
+  clip-path: polygon(50% 100%, 0 45%, 0 18%, 22% 0, 50% 16%, 78% 0, 100% 18%, 100% 45%);
+}
+
+.tablet-town-hearts i[data-on='true'] {
+  background: var(--screen-red);
+}

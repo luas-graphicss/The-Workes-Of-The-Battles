@@ -1,0 +1,1475 @@
+.garage {
+  --accent: 95 224 207;
+  --panel-w: min(440px, 36vw);
+  --edge: 24px;
+  --top-h: 64px;
+  --violet: #c4a0ff;
+  position: absolute;
+  inset: 0;
+  z-index: 32;
+  overflow: hidden;
+  background: var(--ink);
+  color: var(--bone);
+  font-family: var(--font-body);
+  opacity: 0;
+  visibility: hidden;
+  pointer-events: none;
+}
+
+.garage[data-visible='true'] {
+  opacity: 1;
+  visibility: visible;
+  pointer-events: auto;
+}
+
+.garage kbd {
+  display: inline-grid;
+  place-items: center;
+  min-width: 1.85em;
+  height: 1.85em;
+  padding: 0 0.5em;
+  font-family: var(--font-display);
+  font-size: 0.72em;
+  font-weight: 700;
+  font-style: normal;
+  line-height: 1;
+  letter-spacing: 0.04em;
+  text-transform: uppercase;
+  color: var(--bone);
+  background: linear-gradient(180deg, color-mix(in oklab, var(--bone) 18%, var(--ink)), color-mix(in oklab, var(--bone) 6%, var(--ink)));
+  box-shadow:
+    inset 0 0 0 1px color-mix(in oklab, var(--bone) 34%, transparent),
+    inset 0 -2px 0 color-mix(in oklab, var(--ink) 70%, transparent);
+  clip-path: polygon(4px 0, 100% 0, 100% calc(100% - 4px), calc(100% - 4px) 100%, 0 100%, 0 4px);
+}
+
+.garage .ui-btn[data-variant='primary'] kbd {
+  color: var(--brass-hi);
+  background: color-mix(in oklab, var(--ink) 86%, var(--brass));
+  box-shadow: inset 0 0 0 1px color-mix(in oklab, var(--ink) 50%, transparent);
+}
+
+.garage-stage {
+  position: absolute;
+  inset: 0;
+  overflow: hidden;
+}
+
+.garage-painting {
+  position: absolute;
+  left: 0;
+  top: 0;
+  mask-image: linear-gradient(90deg, #000 calc(100% - 120px), transparent);
+  transform-origin: 0 0;
+  transition: transform 900ms var(--ease-out);
+  will-change: transform;
+}
+
+.garage[data-visible='true'] .garage-painting {
+  animation: garage-enter 1100ms var(--ease-out) both;
+}
+
+@keyframes garage-enter {
+  from {
+    opacity: 0;
+    filter: brightness(0.4) blur(3px);
+  }
+  to {
+    opacity: 1;
+    filter: none;
+  }
+}
+
+.garage-art {
+  display: block;
+  width: 100%;
+  height: 100%;
+  image-rendering: pixelated;
+  pointer-events: none;
+  user-select: none;
+}
+
+.garage-spots {
+  position: absolute;
+  inset: 0;
+}
+
+.garage-spot {
+  --lock: rgb(var(--accent) / 0);
+  position: absolute;
+  padding: 0;
+  border: 0;
+  cursor: pointer;
+  background:
+    linear-gradient(var(--lock), var(--lock)) left top / 22px 2px no-repeat,
+    linear-gradient(var(--lock), var(--lock)) left top / 2px 22px no-repeat,
+    linear-gradient(var(--lock), var(--lock)) right top / 22px 2px no-repeat,
+    linear-gradient(var(--lock), var(--lock)) right top / 2px 22px no-repeat,
+    linear-gradient(var(--lock), var(--lock)) left bottom / 22px 2px no-repeat,
+    linear-gradient(var(--lock), var(--lock)) left bottom / 2px 22px no-repeat,
+    linear-gradient(var(--lock), var(--lock)) right bottom / 22px 2px no-repeat,
+    linear-gradient(var(--lock), var(--lock)) right bottom / 2px 22px no-repeat;
+  transition:
+    box-shadow 260ms ease,
+    background-color 260ms ease;
+}
+
+.garage-spot:focus-visible {
+  outline: none;
+}
+
+.garage-spot[data-hot='true'],
+.garage-spot[data-active='true'],
+.garage-spot:focus-visible {
+  --lock: rgb(var(--accent));
+  background-color: rgb(var(--accent) / 0.06);
+  box-shadow: inset 0 0 70px rgb(var(--accent) / 0.16);
+}
+
+.garage-pin {
+  position: absolute;
+  display: flex;
+  align-items: center;
+  gap: 0.55em;
+  font-size: clamp(11px, 1.05vw, 15px);
+  pointer-events: none;
+  opacity: 0;
+  transform: translate(-1em, -50%);
+  transition:
+    opacity 220ms ease,
+    transform 300ms var(--ease-out);
+}
+
+.garage-spot[data-hot='true']:not([data-active='true']) + .garage-pin {
+  opacity: 1;
+}
+
+.garage-pin-mark {
+  position: relative;
+  display: grid;
+  place-items: center;
+  width: 2em;
+  height: 2em;
+  flex: none;
+}
+
+.garage-pin-mark::before {
+  content: '';
+  position: absolute;
+  inset: 0.3em;
+  border: 2px solid rgb(var(--accent));
+  background: color-mix(in oklab, var(--ink) 70%, transparent);
+  transform: rotate(45deg);
+  box-shadow: 0 0 12px rgb(var(--accent) / 0.5);
+}
+
+.garage-pin-mark::after {
+  content: '';
+  position: absolute;
+  inset: 0.1em;
+  border: 1px solid rgb(var(--accent));
+  transform: rotate(45deg);
+  animation: garage-ping 2.2s ease-out infinite;
+}
+
+@keyframes garage-ping {
+  0% {
+    transform: rotate(45deg) scale(0.7);
+    opacity: 0.9;
+  }
+  100% {
+    transform: rotate(45deg) scale(1.7);
+    opacity: 0;
+  }
+}
+
+.garage-pin-mark i {
+  position: relative;
+  width: 0.45em;
+  height: 0.45em;
+  background: rgb(var(--accent));
+  transform: rotate(45deg);
+  box-shadow: 0 0 8px rgb(var(--accent));
+}
+
+.garage-pin-label {
+  display: flex;
+  flex-direction: column;
+  gap: 0.15em;
+  padding: 0.45em 0.85em 0.5em;
+  border-left: 2px solid rgb(var(--accent));
+  background: linear-gradient(90deg, var(--glass-strong), color-mix(in oklab, var(--ink) 55%, transparent));
+  white-space: nowrap;
+  transition: transform 300ms var(--ease-out);
+}
+
+.garage-pin-label b {
+  font-family: var(--font-display);
+  font-size: 0.9em;
+  font-weight: 700;
+  letter-spacing: 0.18em;
+  text-transform: uppercase;
+  color: var(--bone);
+}
+
+.garage-pin-label small {
+  font-size: 0.74em;
+  color: var(--muted-text);
+}
+
+.garage-shade {
+  position: absolute;
+  inset: 0;
+  pointer-events: none;
+  background:
+    linear-gradient(180deg, color-mix(in oklab, var(--ink) 78%, transparent) 0%, transparent 22%),
+    linear-gradient(270deg, color-mix(in oklab, var(--ink) 82%, transparent) 0%, color-mix(in oklab, var(--ink) 30%, transparent) calc(var(--panel-w) + 40px), transparent calc(var(--panel-w) + 200px)),
+    linear-gradient(0deg, color-mix(in oklab, var(--ink) 70%, transparent) 0%, transparent 30%);
+}
+
+.garage-top {
+  position: absolute;
+  left: var(--edge);
+  right: var(--edge);
+  top: 18px;
+  z-index: 3;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 16px;
+  min-height: var(--top-h);
+  pointer-events: none;
+}
+
+.garage-top > * {
+  pointer-events: auto;
+}
+
+.garage-title {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  min-width: 0;
+}
+
+.garage-title-emblem {
+  width: 48px;
+  height: 48px;
+  flex: none;
+  image-rendering: pixelated;
+  filter: drop-shadow(0 0 10px color-mix(in oklab, var(--brass) 40%, transparent));
+}
+
+.garage-name {
+  margin: 2px 0 0;
+  font-family: var(--font-display);
+  font-size: clamp(20px, 2.2vw, 30px);
+  font-weight: 700;
+  line-height: 1.05;
+  letter-spacing: 0.04em;
+  text-transform: uppercase;
+  text-wrap: balance;
+  text-shadow: 0 2px 0 color-mix(in oklab, var(--ink) 80%, transparent);
+}
+
+.garage-top-right {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  flex: none;
+}
+
+.garage-purse {
+  --cut: 10px;
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  padding: 7px 16px 7px 10px;
+}
+
+.garage-purse[data-currency='fragments'] {
+  --frame: color-mix(in oklab, var(--violet) 40%, transparent);
+  --bracket: var(--violet);
+}
+
+.garage-purse img {
+  width: 34px;
+  height: 34px;
+  flex: none;
+  image-rendering: pixelated;
+}
+
+.garage-purse-text {
+  display: flex;
+  flex-direction: column;
+  line-height: 1.05;
+}
+
+.garage-purse-value {
+  font-family: var(--font-display);
+  font-size: 1.25em;
+  font-weight: 700;
+  font-variant-numeric: tabular-nums;
+  color: var(--brass-hi);
+}
+
+.garage-purse[data-currency='fragments'] .garage-purse-value {
+  color: color-mix(in oklab, var(--violet) 80%, var(--bone));
+}
+
+.garage-purse-text small {
+  font-size: 0.68em;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  color: var(--muted-text);
+}
+
+.garage-purse[data-bump='gain'] {
+  animation: garage-gain 650ms var(--ease-out);
+}
+
+.garage-purse[data-bump='spend'] {
+  animation: garage-spend 650ms var(--ease-out);
+}
+
+.garage-purse[data-shake='true'] {
+  animation: garage-shake 420ms ease;
+}
+
+@keyframes garage-gain {
+  30% {
+    transform: translateY(-3px) scale(1.05);
+    filter: brightness(1.4);
+  }
+}
+
+@keyframes garage-spend {
+  30% {
+    transform: scale(0.95);
+    filter: brightness(0.8) saturate(1.4);
+  }
+}
+
+@keyframes garage-shake {
+  20% {
+    transform: translateX(-5px);
+  }
+  40% {
+    transform: translateX(5px);
+  }
+  60% {
+    transform: translateX(-3px);
+  }
+  80% {
+    transform: translateX(3px);
+  }
+}
+
+.garage-exit {
+  flex: none;
+}
+
+.garage-tabs {
+  position: absolute;
+  left: var(--edge);
+  top: calc(18px + var(--top-h) + 12px);
+  z-index: 3;
+  display: flex;
+  gap: 8px;
+}
+
+.garage-tab {
+  --cut: 10px;
+  position: relative;
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  min-width: 0;
+  padding: 6px 14px 6px 6px;
+  border: 1px solid color-mix(in oklab, var(--bone) 16%, transparent);
+  background: linear-gradient(180deg, color-mix(in oklab, var(--ink) 74%, transparent), var(--glass-strong));
+  color: var(--bone);
+  font: inherit;
+  text-align: left;
+  cursor: pointer;
+  clip-path: polygon(var(--cut) 0, 100% 0, 100% calc(100% - var(--cut)), calc(100% - var(--cut)) 100%, 0 100%, 0 var(--cut));
+  transition:
+    border-color 200ms ease,
+    background 200ms ease;
+}
+
+.garage-tab:hover,
+.garage-tab:focus-visible {
+  outline: none;
+  border-color: rgb(var(--accent) / 0.6);
+}
+
+.garage-tab[data-active='true'] {
+  border-color: rgb(var(--accent));
+  background: linear-gradient(180deg, color-mix(in oklab, var(--ink) 70%, rgb(var(--accent))), var(--glass-strong));
+  box-shadow: inset 0 -2px 0 rgb(var(--accent));
+}
+
+.garage-tab-face {
+  display: block;
+  width: 44px;
+  height: 44px;
+  flex: none;
+  overflow: hidden;
+  border: 1px solid rgb(var(--accent) / 0.5);
+  background: color-mix(in oklab, var(--ink) 60%, rgb(var(--accent)));
+}
+
+.garage-tab-face img {
+  display: block;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  image-rendering: pixelated;
+}
+
+.garage-tab-text {
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+  min-width: 0;
+}
+
+.garage-tab-text b {
+  font-family: var(--font-display);
+  font-size: 0.95em;
+  font-weight: 700;
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+}
+
+.garage-tab-text small {
+  font-size: 0.72em;
+  color: var(--muted-text);
+  white-space: nowrap;
+}
+
+.garage-tab kbd {
+  margin-left: 4px;
+}
+
+.garage-tab-badge {
+  position: absolute;
+  left: 38px;
+  top: 2px;
+  display: grid;
+  place-items: center;
+  min-width: 18px;
+  height: 18px;
+  padding: 0 5px;
+  font-family: var(--font-display);
+  font-size: 0.68em;
+  font-weight: 700;
+  color: var(--ink);
+  background: var(--brass);
+  clip-path: polygon(4px 0, 100% 0, 100% calc(100% - 4px), calc(100% - 4px) 100%, 0 100%, 0 4px);
+  opacity: 0;
+  transform: scale(0.6);
+  transition:
+    opacity 200ms ease,
+    transform 260ms var(--ease-out);
+}
+
+.garage-tab-badge[data-visible='true'] {
+  opacity: 1;
+  transform: none;
+}
+
+.garage-panel {
+  --frame: rgb(var(--accent) / 0.38);
+  --bracket: rgb(var(--accent));
+  --fill: linear-gradient(180deg, color-mix(in oklab, var(--ink) 86%, rgb(var(--accent))) 0%, var(--glass-strong) 40%);
+  position: absolute;
+  right: var(--edge);
+  top: calc(18px + var(--top-h) + 12px);
+  bottom: 54px;
+  z-index: 2;
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+  width: var(--panel-w);
+  padding: 16px 18px 18px;
+  overflow-y: auto;
+  overscroll-behavior: contain;
+  scrollbar-width: thin;
+  scrollbar-color: rgb(var(--accent) / 0.4) transparent;
+}
+
+.garage-panel-head {
+  display: flex;
+  align-items: center;
+  gap: 14px;
+  flex: none;
+}
+
+.garage-portrait-frame {
+  position: relative;
+  display: block;
+  width: 72px;
+  height: 72px;
+  flex: none;
+  overflow: hidden;
+  border: 1px solid rgb(var(--accent) / 0.6);
+  background: color-mix(in oklab, var(--ink) 55%, rgb(var(--accent)));
+  clip-path: polygon(10px 0, 100% 0, 100% calc(100% - 10px), calc(100% - 10px) 100%, 0 100%, 0 10px);
+}
+
+.garage-portrait {
+  display: block;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  image-rendering: pixelated;
+}
+
+.garage-panel-titles {
+  display: flex;
+  flex-direction: column;
+  gap: 3px;
+  min-width: 0;
+}
+
+.garage-panel-kicker {
+  color: rgb(var(--accent));
+}
+
+.garage-panel-name {
+  margin: 0;
+  font-family: var(--font-display);
+  font-size: 1.5em;
+  font-weight: 700;
+  line-height: 1.05;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+}
+
+.garage-panel-specialty {
+  margin: 0;
+  font-size: 0.82em;
+  line-height: 1.45;
+  color: var(--muted-text);
+  text-wrap: pretty;
+}
+
+.garage-quote {
+  position: relative;
+  flex: none;
+  margin: 0;
+  padding: 9px 12px 9px 14px;
+  border-left: 2px solid rgb(var(--accent));
+  background: rgb(var(--accent) / 0.08);
+  font-size: 0.86em;
+  font-style: italic;
+  line-height: 1.5;
+  text-wrap: pretty;
+}
+
+.garage-quote:empty {
+  display: none;
+}
+
+.garage-quote[data-run='true'] {
+  animation: garage-say 420ms var(--ease-out);
+}
+
+@keyframes garage-say {
+  from {
+    opacity: 0;
+    transform: translateY(4px);
+  }
+}
+
+.garage-slots {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 10px;
+  flex: none;
+}
+
+.garage-slots-label {
+  font-family: var(--font-display);
+  font-size: 0.72em;
+  font-weight: 600;
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+  color: var(--muted-text);
+}
+
+.garage-slots-label b {
+  margin-left: 4px;
+  color: rgb(var(--accent));
+}
+
+.garage-slots-row {
+  display: flex;
+  gap: 6px;
+}
+
+.garage-slots-row i {
+  display: grid;
+  place-items: center;
+  width: 34px;
+  height: 34px;
+  overflow: hidden;
+  border: 1px dashed color-mix(in oklab, var(--bone) 28%, transparent);
+  background: color-mix(in oklab, var(--ink) 50%, transparent);
+  transform: rotate(45deg) scale(0.78);
+}
+
+.garage-slots-row i[data-filled='true'] {
+  border: 1px solid rgb(var(--accent));
+  background: color-mix(in oklab, var(--ink) 60%, rgb(var(--accent)));
+  box-shadow: 0 0 10px rgb(var(--accent) / 0.4);
+}
+
+.garage-slots-row img {
+  width: 28px;
+  height: 28px;
+  transform: rotate(-45deg) scale(1.18);
+  image-rendering: pixelated;
+}
+
+.garage-items {
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+  flex: none;
+  margin: 0 -6px;
+  padding: 2px 6px;
+}
+
+.garage-item {
+  --cut: 8px;
+  position: relative;
+  display: grid;
+  grid-template-columns: auto 1fr auto;
+  align-items: center;
+  gap: 12px;
+  flex: none;
+  padding: 7px 10px 7px 7px;
+  border: 1px solid color-mix(in oklab, var(--bone) 12%, transparent);
+  background: linear-gradient(180deg, color-mix(in oklab, var(--ink) 62%, var(--bone) 4%), color-mix(in oklab, var(--ink) 80%, transparent));
+  color: var(--bone);
+  font: inherit;
+  text-align: left;
+  cursor: pointer;
+  clip-path: polygon(var(--cut) 0, 100% 0, 100% calc(100% - var(--cut)), calc(100% - var(--cut)) 100%, 0 100%, 0 var(--cut));
+  animation: garage-item-in 420ms var(--ease-out) both;
+  animation-delay: calc(var(--index, 0) * 40ms);
+  transition:
+    border-color 180ms ease,
+    background 180ms ease;
+}
+
+@keyframes garage-item-in {
+  from {
+    opacity: 0;
+    transform: translateX(10px);
+  }
+}
+
+.garage-item:hover,
+.garage-item:focus-visible {
+  outline: none;
+  border-color: rgb(var(--accent) / 0.5);
+}
+
+.garage-item[data-active='true'] {
+  border-color: rgb(var(--accent));
+  background: linear-gradient(90deg, color-mix(in oklab, var(--ink) 72%, rgb(var(--accent))), color-mix(in oklab, var(--ink) 84%, transparent));
+}
+
+.garage-item[data-pop='true'] {
+  animation: garage-pop 900ms var(--ease-out);
+}
+
+@keyframes garage-pop {
+  25% {
+    filter: brightness(1.7);
+    transform: scale(1.02);
+  }
+}
+
+.garage-item-icon {
+  display: grid;
+  place-items: center;
+  width: 48px;
+  height: 48px;
+  overflow: hidden;
+  border: 1px solid color-mix(in oklab, var(--bone) 14%, transparent);
+  background: color-mix(in oklab, var(--ink) 70%, rgb(var(--accent)));
+}
+
+.garage-item-icon img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  image-rendering: pixelated;
+}
+
+.garage-item[data-owned='false'] .garage-item-icon img {
+  filter: saturate(0.45) brightness(0.8);
+}
+
+.garage-item-text {
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+  min-width: 0;
+}
+
+.garage-item-text b {
+  font-family: var(--font-display);
+  font-size: 0.98em;
+  font-weight: 700;
+  letter-spacing: 0.06em;
+}
+
+.garage-item-text small {
+  font-size: 0.76em;
+  line-height: 1.35;
+  color: var(--muted-text);
+  text-wrap: pretty;
+}
+
+.garage-item-side {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-end;
+  gap: 5px;
+}
+
+.garage-item[data-affordable='false'][data-maxed='false'] .garage-price {
+  opacity: 0.55;
+}
+
+.garage-item-flag {
+  position: absolute;
+  left: 0;
+  top: 0;
+  padding: 1px 8px 1px 10px;
+  font-family: var(--font-display);
+  font-size: 0.6em;
+  font-weight: 700;
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+  color: var(--ink);
+  background: rgb(var(--accent));
+  clip-path: polygon(8px 0, 100% 0, calc(100% - 5px) 100%, 0 100%);
+}
+
+.garage-pips {
+  display: flex;
+  gap: 3px;
+}
+
+.garage-pips i {
+  display: grid;
+  place-items: center;
+  min-width: 18px;
+  height: 14px;
+  padding: 0 3px;
+  font-family: var(--font-display);
+  font-size: 0.56em;
+  font-style: normal;
+  font-weight: 700;
+  color: var(--muted-text);
+  border: 1px solid color-mix(in oklab, var(--bone) 18%, transparent);
+}
+
+.garage-pips i[data-on='true'] {
+  color: var(--ink);
+  border-color: rgb(var(--accent));
+  background: rgb(var(--accent));
+}
+
+.garage-price {
+  display: inline-flex;
+  align-items: center;
+  gap: 4px;
+  font-family: var(--font-display);
+  font-size: 0.86em;
+  font-weight: 700;
+  font-variant-numeric: tabular-nums;
+  color: var(--brass-hi);
+  white-space: nowrap;
+}
+
+.garage-price[data-currency='fragments'] {
+  color: color-mix(in oklab, var(--violet) 80%, var(--bone));
+}
+
+.garage-price img {
+  width: 18px;
+  height: 18px;
+  image-rendering: pixelated;
+}
+
+.garage-max {
+  font-family: var(--font-display);
+  font-size: 0.72em;
+  font-weight: 700;
+  letter-spacing: 0.16em;
+  text-transform: uppercase;
+  color: rgb(var(--accent));
+}
+
+.garage-detail {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+  flex: none;
+  padding-top: 12px;
+  border-top: 1px solid var(--hair);
+}
+
+.garage-detail-head {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+}
+
+.garage-detail-icon {
+  display: block;
+  width: 64px;
+  height: 64px;
+  flex: none;
+  overflow: hidden;
+  border: 1px solid rgb(var(--accent) / 0.6);
+  background: color-mix(in oklab, var(--ink) 60%, rgb(var(--accent)));
+  box-shadow: 0 0 18px rgb(var(--accent) / 0.25);
+}
+
+.garage-detail-icon img {
+  display: block;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  image-rendering: pixelated;
+}
+
+.garage-detail-titles {
+  display: flex;
+  flex-direction: column;
+  gap: 3px;
+  min-width: 0;
+}
+
+.garage-detail-titles .ui-kicker {
+  color: rgb(var(--accent));
+}
+
+.garage-detail-name {
+  margin: 0;
+  font-family: var(--font-display);
+  font-size: 1.3em;
+  font-weight: 700;
+  letter-spacing: 0.06em;
+}
+
+.garage-detail-level {
+  font-size: 0.78em;
+  color: var(--muted-text);
+}
+
+.garage-detail-text {
+  margin: 0;
+  font-size: 0.86em;
+  line-height: 1.55;
+  text-wrap: pretty;
+}
+
+.garage-levels {
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+  margin: 0;
+  padding: 0;
+  list-style: none;
+}
+
+.garage-levels li {
+  display: grid;
+  grid-template-columns: auto 1fr auto;
+  align-items: center;
+  gap: 10px;
+  padding: 6px 8px;
+  font-size: 0.8em;
+  line-height: 1.4;
+  border-left: 2px solid transparent;
+  background: color-mix(in oklab, var(--ink) 55%, transparent);
+}
+
+.garage-levels li[data-state='done'] {
+  border-left-color: rgb(var(--accent));
+  color: var(--bone);
+}
+
+.garage-levels li[data-state='next'] {
+  border-left-color: var(--brass);
+  background: color-mix(in oklab, var(--brass) 9%, transparent);
+}
+
+.garage-levels li[data-state='later'] {
+  color: var(--muted-text);
+}
+
+.garage-level-mark {
+  min-width: 26px;
+  font-family: var(--font-display);
+  font-weight: 700;
+  letter-spacing: 0.08em;
+  color: rgb(var(--accent));
+}
+
+.garage-levels li[data-state='later'] .garage-level-mark {
+  color: var(--muted-text);
+}
+
+.garage-level-check svg {
+  width: 16px;
+  height: 16px;
+  color: rgb(var(--accent));
+}
+
+.garage-actions {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+}
+
+.garage-buy {
+  flex: 1 1 auto;
+  justify-content: center;
+  gap: 10px;
+}
+
+.garage-buy .garage-price {
+  color: inherit;
+}
+
+.garage-buy[data-affordable='false']:not([disabled]) {
+  filter: saturate(0.5) brightness(0.85);
+}
+
+.garage-equip[data-equipped='true'] {
+  border-color: rgb(var(--accent) / 0.6);
+}
+
+.garage-loadout {
+  --cut: 12px;
+  position: absolute;
+  left: var(--edge);
+  bottom: 54px;
+  z-index: 2;
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+  width: min(360px, 30vw);
+  padding: 12px 14px 14px;
+}
+
+.garage-loadout-head {
+  display: flex;
+  align-items: baseline;
+  justify-content: space-between;
+  gap: 8px;
+}
+
+.garage-loadout-head small {
+  font-size: 0.72em;
+  color: var(--muted-text);
+}
+
+.garage-loadout-row {
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+}
+
+.garage-loadout-label {
+  font-family: var(--font-display);
+  font-size: 0.66em;
+  font-weight: 600;
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+  color: var(--muted-text);
+}
+
+.garage-loadout-row ul {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 6px;
+  margin: 0;
+  padding: 0;
+  list-style: none;
+}
+
+.garage-loadout-row li {
+  position: relative;
+  display: grid;
+  place-items: center;
+  width: 40px;
+  height: 40px;
+  border: 1px dashed color-mix(in oklab, var(--bone) 24%, transparent);
+  background: color-mix(in oklab, var(--ink) 60%, transparent);
+}
+
+.garage-loadout-row li[data-id] {
+  cursor: pointer;
+}
+
+.garage-loadout-row li[data-filled='true'] {
+  border-style: solid;
+  border-color: color-mix(in oklab, var(--bone) 30%, transparent);
+}
+
+.garage-loadout-row[data-kind='chip'] li[data-filled='true'] {
+  border-color: rgb(95 224 207 / 0.7);
+}
+
+.garage-loadout-row[data-kind='mount'] li[data-filled='true'] {
+  border-color: rgb(232 176 74 / 0.7);
+}
+
+.garage-loadout-row[data-kind='perk'] li[data-filled='true'] {
+  border-color: rgb(196 160 255 / 0.7);
+}
+
+.garage-loadout-row li img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  image-rendering: pixelated;
+}
+
+.garage-loadout-row li[data-filled='false'] img {
+  opacity: 0.28;
+  filter: grayscale(1);
+}
+
+.garage-loadout-row li b {
+  position: absolute;
+  right: -4px;
+  bottom: -5px;
+  padding: 0 4px;
+  font-family: var(--font-display);
+  font-size: 0.6em;
+  font-weight: 700;
+  line-height: 1.4;
+  text-transform: uppercase;
+  color: var(--ink);
+  background: var(--bone);
+}
+
+.garage-hints {
+  position: absolute;
+  left: var(--edge);
+  bottom: 16px;
+  z-index: 2;
+  display: flex;
+  flex-wrap: wrap;
+  gap: 6px 16px;
+  font-size: 0.78em;
+  color: var(--muted-text);
+}
+
+.garage-hints span {
+  display: inline-flex;
+  align-items: center;
+  gap: 4px;
+}
+
+.garage-toast {
+  --cut: 12px;
+  position: absolute;
+  left: 50%;
+  top: calc(18px + var(--top-h) + 20px);
+  z-index: 5;
+  display: flex;
+  align-items: center;
+  gap: 14px;
+  padding: 10px 22px 10px 10px;
+  border: 1px solid rgb(var(--accent));
+  background: linear-gradient(180deg, color-mix(in oklab, var(--ink) 70%, rgb(var(--accent))), var(--glass-strong));
+  box-shadow: 0 18px 40px -18px rgb(var(--accent) / 0.6);
+  clip-path: polygon(var(--cut) 0, 100% 0, 100% calc(100% - var(--cut)), calc(100% - var(--cut)) 100%, 0 100%, 0 var(--cut));
+  opacity: 0;
+  visibility: hidden;
+  pointer-events: none;
+  transform: translate(-50%, -12px);
+  transition:
+    opacity 260ms ease,
+    transform 360ms var(--ease-out),
+    visibility 0s linear 360ms;
+}
+
+.garage[data-layout='wide'] .garage-toast {
+  left: calc((100% - var(--panel-w) - var(--edge)) / 2);
+  top: auto;
+  bottom: 64px;
+}
+
+.garage-toast[data-visible='true'] {
+  opacity: 1;
+  visibility: visible;
+  transform: translate(-50%, 0);
+  transition:
+    opacity 200ms ease,
+    transform 420ms var(--ease-out),
+    visibility 0s;
+}
+
+.garage-toast-icon {
+  display: block;
+  width: 56px;
+  height: 56px;
+  overflow: hidden;
+  border: 1px solid rgb(var(--accent) / 0.7);
+}
+
+.garage-toast-icon img {
+  display: block;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  image-rendering: pixelated;
+}
+
+.garage-toast-text {
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+}
+
+.garage-toast-kicker {
+  color: rgb(var(--accent));
+}
+
+.garage-toast-name {
+  font-family: var(--font-display);
+  font-size: 1.3em;
+  font-weight: 700;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+}
+
+@media (max-height: 700px) {
+  .garage {
+    --top-h: 52px;
+  }
+
+  .garage-top {
+    top: 12px;
+  }
+
+  .garage-title-emblem {
+    width: 38px;
+    height: 38px;
+  }
+
+  .garage-panel {
+    top: calc(12px + var(--top-h) + 10px);
+    bottom: 44px;
+  }
+
+  .garage-tabs {
+    top: calc(12px + var(--top-h) + 10px);
+  }
+
+  .garage-loadout {
+    display: none;
+  }
+
+  .garage-hints {
+    bottom: 12px;
+  }
+
+  .garage-tab-text small {
+    display: none;
+  }
+
+  .garage-tab-face {
+    width: 34px;
+    height: 34px;
+  }
+}
+
+@media (min-width: 1100px) {
+  .garage {
+    --panel-w: min(800px, 60vw);
+  }
+
+  .garage[data-layout='wide'] .garage-panel {
+    display: grid;
+    grid-template-columns: minmax(0, 1fr) minmax(0, 1.05fr);
+    grid-template-rows: auto auto auto minmax(0, 1fr);
+    grid-template-areas:
+      'head detail'
+      'quote detail'
+      'slots detail'
+      'items detail';
+    gap: 10px 20px;
+    overflow: hidden;
+  }
+
+  .garage[data-layout='wide'] .garage-panel-head {
+    grid-area: head;
+  }
+
+  .garage[data-layout='wide'] .garage-quote {
+    grid-area: quote;
+  }
+
+  .garage[data-layout='wide'] .garage-slots {
+    grid-area: slots;
+  }
+
+  .garage[data-layout='wide'] .garage-items {
+    grid-area: items;
+    min-height: 0;
+    overflow-y: auto;
+    overscroll-behavior: contain;
+    scrollbar-width: thin;
+    scrollbar-color: rgb(var(--accent) / 0.4) transparent;
+  }
+
+  .garage[data-layout='wide'] .garage-detail {
+    grid-area: detail;
+    min-height: 0;
+    padding: 0 0 0 20px;
+    border-top: 0;
+    border-left: 1px solid var(--hair);
+    overflow-y: auto;
+    overscroll-behavior: contain;
+    scrollbar-width: thin;
+    scrollbar-color: rgb(var(--accent) / 0.4) transparent;
+  }
+
+  .garage[data-layout='wide'] .garage-loadout {
+    width: min(340px, calc(100vw - var(--panel-w) - 3 * var(--edge) - 40px));
+  }
+}
+
+@media (min-width: 1100px) and (max-height: 560px) {
+  .garage[data-layout='wide'] .garage-panel-specialty {
+    display: none;
+  }
+
+  .garage[data-layout='wide'] .garage-portrait-frame {
+    width: 52px;
+    height: 52px;
+  }
+
+  .garage[data-layout='wide'] .garage-quote {
+    display: -webkit-box;
+    overflow: hidden;
+    -webkit-box-orient: vertical;
+    -webkit-line-clamp: 2;
+  }
+
+  .garage[data-layout='wide'] .garage-item {
+    padding-block: 5px;
+  }
+
+  .garage[data-layout='wide'] .garage-item-icon {
+    width: 40px;
+    height: 40px;
+  }
+
+  .garage[data-layout='wide'] .garage-item-text small {
+    display: none;
+  }
+}
+
+.garage[data-layout='narrow'] {
+  --edge: 12px;
+  --top-h: 48px;
+}
+
+.garage[data-layout='narrow'] .garage-top {
+  top: 10px;
+}
+
+.garage[data-layout='narrow'] .garage-title .ui-kicker,
+.garage[data-layout='narrow'] .garage-title-emblem,
+.garage[data-layout='narrow'] .garage-purse-text small,
+.garage[data-layout='narrow'] .garage-exit span,
+.garage[data-layout='narrow'] .garage-exit kbd,
+.garage[data-layout='narrow'] .garage-tab-text small,
+.garage[data-layout='narrow'] .garage-tab kbd,
+.garage[data-layout='narrow'] .garage-loadout,
+.garage[data-layout='narrow'] .garage-hints {
+  display: none;
+}
+
+.garage[data-layout='narrow'] .garage-name {
+  max-width: 9em;
+  font-size: 15px;
+  letter-spacing: 0.02em;
+}
+
+.garage[data-layout='narrow'] .garage-purse {
+  gap: 6px;
+  padding: 5px 10px 5px 6px;
+}
+
+.garage[data-layout='narrow'] .garage-purse img {
+  width: 24px;
+  height: 24px;
+}
+
+.garage[data-layout='narrow'] .garage-tabs {
+  left: var(--edge);
+  right: var(--edge);
+  top: calc(10px + var(--top-h) + 8px);
+}
+
+.garage[data-layout='narrow'] .garage-tab {
+  flex: 1 1 0;
+  justify-content: center;
+  gap: 6px;
+  padding: 5px 8px 5px 5px;
+}
+
+.garage[data-layout='narrow'] .garage-tab-text b {
+  font-size: 0.82em;
+  letter-spacing: 0.06em;
+}
+
+.garage[data-layout='narrow'] .garage-tab-badge {
+  left: 24px;
+}
+
+.garage[data-layout='narrow'] .garage-tab-face {
+  width: 30px;
+  height: 30px;
+}
+
+.garage[data-layout='narrow'] .garage-pin {
+  font-size: 11px;
+}
+
+.garage[data-layout='narrow'] .garage-shade {
+  background:
+    linear-gradient(180deg, color-mix(in oklab, var(--ink) 80%, transparent) 0%, transparent 24%),
+    linear-gradient(0deg, var(--ink) 0%, color-mix(in oklab, var(--ink) 60%, transparent) 58%, transparent 70%);
+}
+
+.garage[data-layout='narrow'] .garage-panel {
+  left: 0;
+  right: 0;
+  top: auto;
+  bottom: 0;
+  width: auto;
+  height: 58%;
+  padding: 14px 14px 18px;
+  overflow-y: auto;
+}
+
+.garage[data-layout='narrow'] .garage-panel-head {
+  display: none;
+}
+
+.garage[data-layout='narrow'] .garage-toast {
+  top: calc(10px + var(--top-h) + 64px);
+  max-width: calc(100% - 24px);
+}
+
+.garage[data-visible='false'] .garage-pin-mark::after {
+  animation: none;
+}
+
+.game-root[data-motion='reduced'] .garage,
+.game-root[data-motion='reduced'] .garage * {
+  animation-duration: 1ms !important;
+  animation-iteration-count: 1 !important;
+  transition-duration: 1ms !important;
+  transition-delay: 0s !important;
+}
+
+.hud-iron {
+  --cut: 10px;
+  --frame: color-mix(in oklab, var(--brass) 30%, transparent);
+  position: relative;
+  display: flex;
+  align-items: center;
+  gap: 0.9em;
+  min-height: 2.75em;
+  padding: 0 0.95em 0 0.6em;
+}
+
+.hud-iron-item {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.4em;
+}
+
+.hud-iron-item img {
+  width: 1.6em;
+  height: 1.6em;
+  flex: none;
+  object-fit: contain;
+  image-rendering: pixelated;
+  filter: drop-shadow(0 0 6px color-mix(in oklab, var(--brass) 45%, transparent));
+}
+
+.hud-iron-item[data-currency='fragments'] img {
+  filter: drop-shadow(0 0 6px color-mix(in oklab, var(--visitor) 50%, transparent));
+}
+
+.hud-iron-value {
+  font-family: var(--font-display);
+  font-size: 1.05em;
+  font-weight: 700;
+  letter-spacing: 0.02em;
+  font-variant-numeric: tabular-nums;
+  color: var(--brass-hi);
+}
+
+.hud-iron-item[data-currency='fragments'] .hud-iron-value {
+  color: color-mix(in oklab, var(--visitor) 80%, var(--bone));
+}
+
+.hud-iron[data-bump='true'] {
+  animation: hud-bump 420ms var(--ease-out);
+}
+
+.hud-iron-delta {
+  position: absolute;
+  right: 0.8em;
+  top: calc(100% + 6px);
+  font-family: var(--font-display);
+  font-size: 0.875em;
+  font-weight: 700;
+  font-variant-numeric: tabular-nums;
+  letter-spacing: 0.04em;
+  white-space: nowrap;
+  color: var(--brass-hi);
+  text-shadow: 0 1px 6px color-mix(in oklab, var(--ink) 90%, transparent);
+  opacity: 0;
+  pointer-events: none;
+}
+
+.hud-iron-delta[data-sign='loss'] {
+  color: var(--signal);
+}
+
+.hud-iron-delta[data-run='true'] {
+  animation: hud-delta 1600ms var(--ease-out) forwards;
+}
+
+@media (max-width: 720px) {
+  .hud-iron {
+    position: absolute;
+    right: 0;
+    top: calc(100% + 8px);
+    min-height: 2.3em;
+  }
+}
